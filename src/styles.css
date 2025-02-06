@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
     font-family: typography-primary;
@@ -58,9 +61,32 @@
   }
   
 
+  h1 {
+    @apply text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-6xl font-semibold;
+  }
+
+  h3 {
+    @apply text-5xl font-semibold;
+  }
+
+  h4 {
+    @apply text-4xl font-semibold;
+  }
+
+  h5 {
+    @apply text-3xl font-medium;
+  }
+
+  h6 {
+    @apply text-2xl font-medium;
+  }
+
 
 @theme {
-
     --font-primary: typography-primary, monospace;
 
     --color-primary-50: #FAF4FF;
