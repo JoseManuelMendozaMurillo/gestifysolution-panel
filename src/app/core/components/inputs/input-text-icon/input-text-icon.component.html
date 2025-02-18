@@ -1,0 +1,39 @@
+<label 
+  [for]="identifier()" 
+  >
+    {{label()}}
+</label>
+<div class="relative">
+    <i [class]="fontAwesomeIcon()" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+    <input 
+      type="text" 
+      [id]="identifier()" 
+      [name]="identifier()" 
+      [placeholder]="placeholder()" 
+      [formControl]="this.control!" 
+      [class.pristine-input]="this.control.pristine" 
+      [class.invalid-input]="!this.control.pristine && !isValidField()"
+      [class.valid-input]="!this.control.pristine && isValidField()" 
+    />
+    @if(!this.control.pristine && this.isValidField()) {
+        <i 
+            [@validationIcon]="!this.control.pristine && this.isValidField() ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-check absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75" 
+            >
+        </i>
+    }@else if(!this.control.pristine && !this.isValidField()) {
+        <i 
+            [@validationIcon]="!this.control.pristine && !this.isValidField() ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-exclamation absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75"
+            >
+        </i>
+    }
+</div>
+<p 
+  [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
+  [class.pristine-message]="this.control.pristine"
+  [class.invalid-message]="!this.control.pristine && !isValidField()"
+  [class.valid-message]="!this.control.pristine && isValidField()"
+  >
+  {{ delayedMessage() }}
+</p>

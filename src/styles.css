@@ -85,7 +85,6 @@
     @apply text-2xl font-medium;
   }
 
-
 @theme {
     --font-primary: typography-primary, monospace;
 

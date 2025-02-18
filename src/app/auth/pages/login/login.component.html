@@ -1,0 +1,27 @@
+<div class="flex justify-start items-center flex-col min-h-screen bg-gray-100 p-2">
+    <form [formGroup]="form" class="w-2xl ps-2 bg-neutral-300 p-5 rounded">
+        <h6 class="text-center">Sign in</h6>
+        <app-input-text 
+            class="mt-2"
+            identifier="example" 
+            label="Email" 
+            placeholder="Enter your email address"
+            helpMessage="Email"
+            successMessage="Done!"
+            formControlName="email"   
+        > 
+        </app-input-text>
+        <br>
+        <app-input-text-icon
+            class="mt-2"
+            identifier="example" 
+            label="Email" 
+            placeholder="Enter your email address"
+            helpMessage="Email"
+            successMessage="Done!"
+            fontAwesomeIcon="fa-solid fa-envelope"
+            formControlName="emailIcon" 
+        >
+        </app-input-text-icon>
+    </form>
+</div>

@@ -1,0 +1,23 @@
+<label 
+  [for]="identifier()" 
+  >
+    {{label()}}
+</label>
+<input 
+  type="text" 
+  [id]="identifier()" 
+  [name]="identifier()" 
+  [placeholder]="placeholder()" 
+  [formControl]="this.control!" 
+  [class.pristine-input]="this.control.pristine" 
+  [class.invalid-input]="!this.control.pristine && !isValidField()"
+  [class.valid-input]="!this.control.pristine && isValidField()" 
+/>
+<p 
+  [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
+  [class.pristine-message]="this.control.pristine"
+  [class.invalid-message]="!this.control.pristine && !isValidField()"
+  [class.valid-message]="!this.control.pristine && isValidField()"
+  >
+  {{ delayedMessage() }}
+</p>
