@@ -4,36 +4,58 @@
     {{label()}}
 </label>
 <div class="relative">
-    <i [class]="fontAwesomeIcon()" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+    <i [class]="fontAwesomeIcon()" class="icon"></i>
     <input 
-      type="text" 
+      [type]="type()" 
       [id]="identifier()" 
       [name]="identifier()" 
       [placeholder]="placeholder()" 
       [formControl]="this.control!" 
-      [class.pristine-input]="this.control.pristine" 
-      [class.invalid-input]="!this.control.pristine && !isValidField()"
-      [class.valid-input]="!this.control.pristine && isValidField()" 
+      [class.pristine-input]="!this.control.touched" 
+      [class.invalid-input]="this.control.touched && !isValidField()"
+      [class.valid-input]="this.control.touched && isValidField()"
     />
-    @if(!this.control.pristine && this.isValidField()) {
+    @if(inputType() === 'password'){
+      @if (statePassword()) {
+        <i class="fa-solid fa-eye-slash icon-password" 
+           (click)="hiddenPassword()"
+            [ngClass]="{
+              'right-3': !this.control.touched,
+              'right-9': this.control.touched
+            }"
+           >
+        </i>
+      }@else{
+        <i class="fa-solid fa-eye icon-password" 
+           (click)="showPassword()"
+           [ngClass]="{
+            'right-3': !this.control.touched,
+            'right-9': this.control.touched
+          }" 
+           >
+        </i>
+      }
+    }
+
+    @if(this.control.touched && this.isValidField()) {
         <i 
-            [@validationIcon]="!this.control.pristine && this.isValidField() ? 'visible' : 'hidden' "
-            class="fa-solid fa-circle-check absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75" 
+            [@validationIcon]="this.control.touched && this.isValidField() ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-check valid-icon" 
             >
         </i>
-    }@else if(!this.control.pristine && !this.isValidField()) {
+    }@else if(this.control.touched && !this.isValidField()) {
         <i 
-            [@validationIcon]="!this.control.pristine && !this.isValidField() ? 'visible' : 'hidden' "
-            class="fa-solid fa-circle-exclamation absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75"
+            [@validationIcon]="this.control.touched && !this.isValidField() ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-exclamation invalid-icon"
             >
         </i>
     }
 </div>
 <p 
   [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
-  [class.pristine-message]="this.control.pristine"
-  [class.invalid-message]="!this.control.pristine && !isValidField()"
-  [class.valid-message]="!this.control.pristine && isValidField()"
+  [class.pristine-message]="!this.control.touched || this.control.touched && isValidField() && this.successMessage() === ''"
+  [class.invalid-message]="this.control.touched && !isValidField()"
+  [class.valid-message]="this.control.touched && isValidField() && this.successMessage()"
   >
   {{ delayedMessage() }}
 </p>

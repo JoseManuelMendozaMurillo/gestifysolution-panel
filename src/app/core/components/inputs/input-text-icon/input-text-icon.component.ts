@@ -1,9 +1,10 @@
-import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorService } from '../../../validations/validator.service';
 import { CommonModule } from '@angular/common';
+import { InputValidTypes } from '../../../types/input-types.type';
 
 @Component({
   selector: 'app-input-text-icon',
@@ -34,8 +35,9 @@ import { CommonModule } from '@angular/common';
       },
     ],
 })
-export class InputTextIconComponent extends DefaultControlValueAccessorDirective<string> {
+export class InputTextIconComponent extends DefaultControlValueAccessorDirective<string> implements OnInit{
     // Inputs
+    public inputType: InputSignal<InputValidTypes> = input.required<InputValidTypes>();
     public identifier: InputSignal<string|undefined> = input<string>();
     public label: InputSignal<string> = input.required<string>();
     public placeholder: InputSignal<string> = input<string>('');
@@ -45,11 +47,20 @@ export class InputTextIconComponent extends DefaultControlValueAccessorDirective
   
     public delayedMessage: WritableSignal<string|undefined> = signal<string | undefined>(undefined);
     public showMessage: WritableSignal<boolean> = signal(true);
+    public statePassword: WritableSignal<boolean> = signal(false);
+    public type: WritableSignal<InputValidTypes> = signal('password');
+
+
+    public override ngOnInit(): void {
+      super.ngOnInit();
+      this.type.set(this.inputType());
+    }
 
     public message: Signal<string | undefined> = computed(() => {
-      this.isEmpty();
-      if (this.control.pristine) return this.helpMessage();
-      if (this.isValidField()) return this.successMessage();
+      const isEmpty = this.isEmpty();
+      const isValid = this.isValidField();
+      if (!this.control.touched) return this.helpMessage();
+      if (isValid) return this.successMessage() ? this.successMessage() : this.helpMessage();
       const firstKeyError: string = ValidatorService.getFirstFieldError(this.control)!;
       const error = this.control!.getError(firstKeyError);
       let errorMessage: string = "Hay un error en este campo";
@@ -72,4 +83,14 @@ export class InputTextIconComponent extends DefaultControlValueAccessorDirective
       // Cleanup function to clear the timeout if the effect re-runs
       return () => clearTimeout(timer);
     });
+
+    public showPassword(): void {
+        this.statePassword.set(true);
+        this.type.set('text');
+    }
+
+    public hiddenPassword(): void {
+        this.statePassword.set(false);
+        this.type.set('password');
+    }
 }

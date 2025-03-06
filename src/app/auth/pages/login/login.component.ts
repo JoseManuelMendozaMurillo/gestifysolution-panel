@@ -1,26 +1,39 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { InputTextComponent } from '../../../core/components/inputs/input-text/input-text.component';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextIconComponent } from "../../../core/components/inputs/input-text-icon/input-text-icon.component";
+import { CheckboxComponent } from "../../../core/components/inputs/checkbox/checkbox.component";
+import { LoadingButtonComponent } from "../../../core/components/buttons/loading-button/loading-button.component";
 
 @Component({
   selector: 'auth-login',
-  imports: [InputTextComponent, ReactiveFormsModule, InputTextIconComponent],
+  imports: [ReactiveFormsModule, InputTextIconComponent, CheckboxComponent, LoadingButtonComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  
   
   ngOnInit(): void {
   }
 
   private fb: FormBuilder = inject(FormBuilder);
 
+  public isLoading: WritableSignal<boolean> = signal<boolean>(false);
+
   public form: FormGroup = this.fb.group({
-    email: ['', [Validators.email, Validators.required]],
-    emailIcon: ['', [Validators.email, Validators.required]],
-    password: []
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+    conditions: [false, []]
   });
+
+  submit() {
+    this.form.markAllAsTouched();
+    this.isLoading.set(true);
+
+    setTimeout(() => this.isLoading.set(false), 5000)
+
+    console.log(this.form.valid);
+
+  }
+
 
 }

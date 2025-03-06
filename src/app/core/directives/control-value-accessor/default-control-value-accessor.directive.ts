@@ -1,6 +1,6 @@
 import { Directive, inject, Injector, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { ControlContainer, ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroup, NgControl, NgModel } from '@angular/forms';
-import { distinctUntilChanged, startWith, Subscription, tap } from 'rxjs';
+import { ControlContainer, ControlEvent, ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroup, NgControl, NgModel, TouchedChangeEvent } from '@angular/forms';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 
 @Directive({
   selector: '[DefaultControlValueAccessor]',
@@ -19,6 +19,7 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
 
   private _onTouched!: () => T;
   private _$subsControlChanges?: Subscription;
+  private _$subsEventChanges?: Subscription;
   private _$subsNgModelChanges?: Subscription;
   private _control?: FormControl;
 
@@ -30,11 +31,13 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
 
   public ngOnInit(): void {
     this.initControl();
+    this.initEventChanges();
   }
 
   public ngOnDestroy(): void {
     this._$subsNgModelChanges?.unsubscribe();
     this._$subsControlChanges?.unsubscribe();
+    this._$subsEventChanges?.unsubscribe();
   }
 
   public writeValue(value: T | null): void {
@@ -44,12 +47,10 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
   public registerOnChange(fn: (val: T | null) => T): void {
     this._$subsControlChanges = this.control.valueChanges.pipe(
       distinctUntilChanged(),
-      //tap((val: T | null) => fn(val))
-    ).subscribe((input: string) => {
-      //this.control.markAsUntouched();
+    ).subscribe((input) => {
+      this.control.markAsTouched();
       this.isValidField.set(this.control.valid);
-      if(input === '') this.isEmpty.set(true);
-      else this.isEmpty.set(false);
+      this.isEmpty.set(input === '');
     });
   }
 
@@ -95,6 +96,15 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
     }catch(error){
       console.log(error);
     }
+  }
+
+  private initEventChanges(): void {
+    this._$subsEventChanges = this.control.events.subscribe((event: ControlEvent<any>) => {
+      if (event instanceof TouchedChangeEvent) {
+        this.isValidField.set(this.control.valid);
+        this.isEmpty.set(this.value() === '');
+      }
+    })
   }
 
 }
