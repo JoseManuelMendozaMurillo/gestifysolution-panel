@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { SingInComponent } from "./auth/pages/sing-in/sing-in.component";
-import { SingUpComponent } from "./auth/pages/sing-up/sing-up.component";
 
 @Component({
   selector: 'app-root',
-  imports: [SingInComponent, SingUpComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

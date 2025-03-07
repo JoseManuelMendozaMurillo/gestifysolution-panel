@@ -3,14 +3,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InputTextIconComponent } from "../../../core/components/inputs/input-text-icon/input-text-icon.component";
 import { CheckboxComponent } from "../../../core/components/inputs/checkbox/checkbox.component";
 import { LoadingButtonComponent } from "../../../core/components/buttons/loading-button/loading-button.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'auth-sing-in',
-  imports: [ReactiveFormsModule, InputTextIconComponent, CheckboxComponent, LoadingButtonComponent],
-  templateUrl: './sing-in.component.html',
-  styleUrl: './sing-in.component.css'
+  selector: 'auth-sign-in',
+  imports: [
+    ReactiveFormsModule, 
+    InputTextIconComponent, 
+    CheckboxComponent, 
+    LoadingButtonComponent,
+    RouterModule,
+  ],
+  templateUrl: './sign-in.component.html',
+  styleUrl: './sign-in.component.css'
 })
-export class SingInComponent implements OnInit {
+export class SignInComponent implements OnInit {
   
   ngOnInit(): void {
   }

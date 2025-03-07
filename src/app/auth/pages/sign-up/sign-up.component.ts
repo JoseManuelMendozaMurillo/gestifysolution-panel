@@ -2,14 +2,20 @@ import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { InputTextIconComponent } from "../../../core/components/inputs/input-text-icon/input-text-icon.component";
 import { LoadingButtonComponent } from '../../../core/components/buttons/loading-button/loading-button.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'auth-sing-up',
-  imports: [InputTextIconComponent, LoadingButtonComponent, ReactiveFormsModule],
-  templateUrl: './sing-up.component.html',
-  styleUrl: './sing-up.component.css'
+  imports: [
+    InputTextIconComponent, 
+    LoadingButtonComponent, 
+    ReactiveFormsModule,
+    RouterModule,
+  ],
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.css'
 })
-export class SingUpComponent {
+export class SignUpComponent {
 
   public isLoading: WritableSignal<boolean> = signal<boolean>(false);
   
