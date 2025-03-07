@@ -5,12 +5,12 @@ import { CheckboxComponent } from "../../../core/components/inputs/checkbox/chec
 import { LoadingButtonComponent } from "../../../core/components/buttons/loading-button/loading-button.component";
 
 @Component({
-  selector: 'auth-login',
+  selector: 'auth-sing-in',
   imports: [ReactiveFormsModule, InputTextIconComponent, CheckboxComponent, LoadingButtonComponent],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './sing-in.component.html',
+  styleUrl: './sing-in.component.css'
 })
-export class LoginComponent implements OnInit {
+export class SingInComponent implements OnInit {
   
   ngOnInit(): void {
   }
