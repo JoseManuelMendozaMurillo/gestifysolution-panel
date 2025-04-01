@@ -1,8 +1,8 @@
 import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, signal, Signal, WritableSignal } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
+import { FormControlStatus, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorService } from '../../../validations/validator.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { InputControlValueAccessorDirective } from '../../../directives/control-value-accessor/input-control-value-accessor.directive';
 
 @Component({
   selector: 'app-checkbox',
@@ -27,7 +27,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     },
   ],
 })
-export class CheckboxComponent extends DefaultControlValueAccessorDirective<boolean> {
+export class CheckboxComponent extends InputControlValueAccessorDirective<boolean> {
 
   public identifier: InputSignal<string | undefined> = input<string>();
   public label: InputSignal<string> = input.required<string>();
@@ -37,26 +37,21 @@ export class CheckboxComponent extends DefaultControlValueAccessorDirective<bool
   public delayedMessage: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   public showMessage: WritableSignal<boolean> = signal(true);
 
-  public message: Signal<string> = computed(() => {
-    const isValid = this.isValidField();
+  public message: Signal<string | undefined> = computed(() => {
+    const status: FormControlStatus | undefined = this.status();
     if (!this.control.touched) {
       return `<span>${this.helpMessage()}</span>`;
     }
-    if (isValid) {
+    if (status === 'VALID') {
       const successIcon = '<i class="fa-solid fa-circle-check"></i>';
       return this.successMessage()
         ? `${successIcon} <span>${this.successMessage()}</span>`
         : `<span>${this.helpMessage()}</span>`;
     }
-    const firstKeyError: string = ValidatorService.getFirstFieldError(this.control)!;
-    const error = this.control.getError(firstKeyError);
+    if (status === 'PENDING') return;
+    const controlError: string = this.controlError()!;
+    const errorMessage: string = ValidatorService.getFieldErrorMessage(this.control, controlError);
     const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
-    let errorMessage = 'Hay un error en este campo';
-    if (typeof error === 'boolean') {
-      errorMessage = ValidatorService.validationMessages[firstKeyError] ?? errorMessage;
-    } else if (typeof error === 'string') {
-      errorMessage = error.toString();
-    }
     return `${errorIcon} <span>${errorMessage}</span>`;
   });
 

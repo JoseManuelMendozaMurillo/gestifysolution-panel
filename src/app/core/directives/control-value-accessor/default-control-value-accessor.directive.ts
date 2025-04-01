@@ -1,5 +1,5 @@
-import { Directive, inject, Injector, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { ControlContainer, ControlEvent, ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroup, NgControl, NgModel, TouchedChangeEvent } from '@angular/forms';
+import { Directive, inject, Injector, OnDestroy, OnInit, signal } from '@angular/core';
+import { ControlContainer, ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroup, NgControl, NgModel, TouchedChangeEvent } from '@angular/forms';
 import { distinctUntilChanged, Subscription } from 'rxjs';
 
 @Directive({
@@ -9,17 +9,15 @@ import { distinctUntilChanged, Subscription } from 'rxjs';
 export class DefaultControlValueAccessorDirective<T> implements ControlValueAccessor, OnInit, OnDestroy {
 
   // Services
-  private injector: Injector = inject(Injector);
+  protected injector: Injector = inject(Injector);
 
   // Properties
-  public isValidField: WritableSignal<boolean|undefined> = signal(undefined);
-  public isEmpty: WritableSignal<boolean|undefined> = signal(undefined);
   public value = signal<null | T>(null);
   public disabled = signal<boolean>(false);
+  public onChange: (value: T | null) => void = () => {};
+  public onTouched: () => void = () => {};
 
-  private _onTouched!: () => T;
   private _$subsControlChanges?: Subscription;
-  private _$subsEventChanges?: Subscription;
   private _$subsNgModelChanges?: Subscription;
   private _control?: FormControl;
 
@@ -31,31 +29,28 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
 
   public ngOnInit(): void {
     this.initControl();
-    this.initEventChanges();
   }
 
   public ngOnDestroy(): void {
     this._$subsNgModelChanges?.unsubscribe();
     this._$subsControlChanges?.unsubscribe();
-    this._$subsEventChanges?.unsubscribe();
   }
 
   public writeValue(value: T | null): void {
     this.value.set(value);
   }
 
-  public registerOnChange(fn: (val: T | null) => T): void {
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
     this._$subsControlChanges = this.control.valueChanges.pipe(
       distinctUntilChanged(),
     ).subscribe((input) => {
-      this.control.markAsTouched();
-      this.isValidField.set(this.control.valid);
-      this.isEmpty.set(input === '');
+      this.onTouched();
     });
   }
 
-  public registerOnTouched(fn: () => T): void {
-    this._onTouched = fn;
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   public setDisabledState?(isDisabled: boolean): void {
@@ -96,15 +91,6 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
     }catch(error){
       console.log(error);
     }
-  }
-
-  private initEventChanges(): void {
-    this._$subsEventChanges = this.control.events.subscribe((event: ControlEvent<any>) => {
-      if (event instanceof TouchedChangeEvent) {
-        this.isValidField.set(this.control.valid);
-        this.isEmpty.set(this.value() === '');
-      }
-    })
   }
 
 }

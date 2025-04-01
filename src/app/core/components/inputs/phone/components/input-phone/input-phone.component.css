@@ -1,0 +1,51 @@
+@reference "../../../../../../../styles.css";
+
+.phone-input {
+  @apply border-t border-b border-r border-l-0 rounded-tr-sm rounded-br-sm rounded-tl-none rounded-bl-none;
+}
+
+.pristine-input {
+  @apply pe-3 border-neutral-500 focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-600 dark:focus:border-primary-600;
+}
+
+.invalid-input {
+  @apply pe-9 border-error-600 focus:ring-error-600 focus:border-error-600  dark:focus:ring-error-600 dark:focus:border-error-600;
+}
+
+.valid-input {
+  @apply pe-9 border-success-600 focus:ring-success-600 focus:border-success-600  dark:focus:ring-success-600 dark:focus:border-success-600;
+}
+
+.valid-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75;
+}
+
+.invalid-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75;
+}
+
+.loading-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 transition delay-75 w-4 h-4;
+}
+
+/* Shared styles */
+.focus-prestine-ring {
+  @apply ring-1 ring-primary-600;
+}
+
+.focus-valid-ring {
+  @apply ring-1 ring-success-600;
+}
+
+.focus-invalid-ring {
+  @apply ring-1 ring-error-600;
+}
+
+.icon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400;
+}
+
+input {
+  @apply focus:ring-1 border bg-white ps-9 placeholder-neutral-400 text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:border-r-0 dark:placeholder-neutral-400 dark:text-white;
+}
+

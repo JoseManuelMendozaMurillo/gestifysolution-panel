@@ -3,21 +3,36 @@
   >
     {{label()}}
 </label>
-<input 
-  type="text" 
-  [id]="identifier()" 
-  [name]="identifier()" 
-  [placeholder]="placeholder()" 
-  [formControl]="this.control!" 
-  [class.pristine-input]="this.control.pristine" 
-  [class.invalid-input]="!this.control.pristine && !isValidField()"
-  [class.valid-input]="!this.control.pristine && isValidField()" 
-/>
+<div class="relative">
+  <input 
+    [type]="type()" 
+    [id]="identifier()" 
+    [name]="identifier()" 
+    [placeholder]="placeholder()" 
+    [formControl]="this.control!" 
+    [class.pristine-input]="!this.control.touched" 
+    [class.invalid-input]="this.control.touched && status() === 'INVALID'"
+    [class.valid-input]="this.control.touched && status() === 'VALID'"
+    [ngClass]="{
+      '!pe-9': inputType() === 'password',
+      '!pe-15': inputType() === 'password' && this.control.touched
+    }"
+  />
+
+  @if(inputType() === 'password'){
+    @if (statePassword()) {
+      <i class="fa-solid fa-eye-slash icon-password" (click)="hiddenPassword()"></i>
+    }@else{
+      <i class="fa-solid fa-eye icon-password" (click)="showPassword()"></i>
+    }
+  }
+
+</div>
 <p 
   [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
-  [class.pristine-message]="this.control.pristine"
-  [class.invalid-message]="!this.control.pristine && !isValidField()"
-  [class.valid-message]="!this.control.pristine && isValidField()"
+  [class.pristine-message]="!this.control.touched || this.control.touched && status() === 'VALID' && this.successMessage() === ''"
+  [class.invalid-message]="this.control.touched && status() === 'INVALID'"
+  [class.valid-message]="this.control.touched && status() === 'VALID' && this.successMessage()"
   >
   {{ delayedMessage() }}
 </p>

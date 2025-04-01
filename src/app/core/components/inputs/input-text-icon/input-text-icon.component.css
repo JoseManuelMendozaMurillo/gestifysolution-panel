@@ -5,7 +5,7 @@ label{
 }
 
 input {
-  @apply ps-9 transition-[padding] duration-200 ease-in-out placeholder-neutral-400 bg-white border text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white;
+  @apply bg-white ps-9 transition-[padding] duration-200 ease-in-out placeholder-neutral-400 border text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white;
 }
 
 p {
@@ -50,6 +50,10 @@ p {
 
 .invalid-icon {
   @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75;
+}
+
+.loading-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 transition delay-75 w-4 h-4;
 }
 
 

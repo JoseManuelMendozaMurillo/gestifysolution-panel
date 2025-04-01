@@ -1,9 +1,10 @@
-import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, signal, Signal, WritableSignal } from '@angular/core';
-import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
+import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { ValidatorService } from '../../../validations/validator.service';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormControlStatus, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { InputControlValueAccessorDirective } from '../../../directives/control-value-accessor/input-control-value-accessor.directive';
+import { InputValidTypes } from '../../../types/input-types.type';
 
 @Component({
   selector: 'app-input-text',
@@ -27,31 +28,34 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     },
   ],
 })
-export class InputTextComponent extends DefaultControlValueAccessorDirective<string>{
+export class InputTextComponent extends InputControlValueAccessorDirective<string> implements OnInit {
 
   // Inputs
-  public identifier: InputSignal<string|undefined> = input<string>();
+  public inputType: InputSignal<InputValidTypes> = input.required<InputValidTypes>();
+  public identifier: InputSignal<string | undefined> = input<string>();
   public label: InputSignal<string> = input.required<string>();
   public placeholder: InputSignal<string> = input<string>('');
   public successMessage: InputSignal<string> = input<string>('');
   public helpMessage: InputSignal<string> = input<string>('');
 
-  public delayedMessage: WritableSignal<string|undefined> = signal<string | undefined>(undefined);
+  public delayedMessage: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   public showMessage: WritableSignal<boolean> = signal(true);
+  public statePassword: WritableSignal<boolean> = signal(false);
+  public type: WritableSignal<InputValidTypes> = signal('password');
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+    this.type.set(this.inputType());
+  }
 
   public message: Signal<string | undefined> = computed(() => {
-    this.isEmpty();
-    if (this.control.pristine) return this.helpMessage();
-    if (this.isValidField()) return this.successMessage();
-    const firstKeyError: string = ValidatorService.getFirstFieldError(this.control)!;
-    const error = this.control!.getError(firstKeyError);
-    let errorMessage: string = "Hay un error en este campo";
-    if(typeof error === 'boolean'){
-      errorMessage = ValidatorService.validationMessages[firstKeyError] ?? errorMessage;
-    }else if(typeof error === 'string'){
-      errorMessage = error.toString();
-    }
-    return errorMessage;
+    const status: FormControlStatus | undefined = this.status();
+    if (!this.control.touched) return this.helpMessage();
+    if (status === 'VALID') return this.successMessage() ? this.successMessage() : this.helpMessage();
+    if (status === 'PENDING') return;
+    const controlError: string = this.controlError()!;
+    const error: string = ValidatorService.getErrorMessage(this.control, controlError);
+    return error;
   });
 
   public changeMessageEffect: EffectRef = effect(() => {
@@ -65,4 +69,14 @@ export class InputTextComponent extends DefaultControlValueAccessorDirective<str
     // Cleanup function to clear the timeout if the effect re-runs
     return () => clearTimeout(timer);
   });
+
+  public showPassword(): void {
+    this.statePassword.set(true);
+    this.type.set('text');
+  }
+
+  public hiddenPassword(): void {
+    this.statePassword.set(false);
+    this.type.set('password');
+  }
 }

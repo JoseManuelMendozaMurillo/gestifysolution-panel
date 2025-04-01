@@ -13,9 +13,9 @@
       </label>
       <p 
           [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
-          [class.untouched-message]="!this.control.touched || this.control.touched && isValidField() && this.successMessage() === ''"
-          [class.invalid-message]="this.control.touched && !isValidField()"
-          [class.valid-message]="this.control.touched && isValidField() && this.successMessage() != ''"
+          [class.untouched-message]="!this.control.touched || this.control.touched && status() === 'VALID' && this.successMessage() === ''"
+          [class.invalid-message]="this.control.touched && status() === 'INVALID'"
+          [class.valid-message]="this.control.touched && status() === 'VALID' && this.successMessage() != ''"
           [innerHTML]="delayedMessage()"
         >    
       </p>

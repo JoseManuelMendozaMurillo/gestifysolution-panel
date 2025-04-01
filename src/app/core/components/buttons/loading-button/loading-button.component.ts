@@ -1,9 +1,10 @@
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import { Component, effect, EffectRef, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { SpinnerComponent } from "../../icons/spinner/spinner.component";
 
 @Component({
   selector: '[appLoadingButton]',
-  imports: [],
+  imports: [SpinnerComponent],
   templateUrl: './loading-button.component.html',
   styleUrl: './loading-button.component.css',
   animations: [

@@ -1,14 +1,15 @@
 import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, OnInit, signal, Signal, WritableSignal } from '@angular/core';
-import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormControlStatus, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorService } from '../../../validations/validator.service';
 import { CommonModule } from '@angular/common';
 import { InputValidTypes } from '../../../types/input-types.type';
+import { InputControlValueAccessorDirective } from '../../../directives/control-value-accessor/input-control-value-accessor.directive';
+import { SpinnerComponent } from '../../icons/spinner/spinner.component';
 
 @Component({
   selector: 'app-input-text-icon',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './input-text-icon.component.html',
   styleUrl: './input-text-icon.component.css',
    animations: [
@@ -35,7 +36,7 @@ import { InputValidTypes } from '../../../types/input-types.type';
       },
     ],
 })
-export class InputTextIconComponent extends DefaultControlValueAccessorDirective<string> implements OnInit{
+export class InputTextIconComponent extends InputControlValueAccessorDirective<string> implements OnInit {
     // Inputs
     public inputType: InputSignal<InputValidTypes> = input.required<InputValidTypes>();
     public identifier: InputSignal<string|undefined> = input<string>();
@@ -57,19 +58,13 @@ export class InputTextIconComponent extends DefaultControlValueAccessorDirective
     }
 
     public message: Signal<string | undefined> = computed(() => {
-      const isEmpty = this.isEmpty();
-      const isValid = this.isValidField();
+      const status: FormControlStatus | undefined = this.status();
       if (!this.control.touched) return this.helpMessage();
-      if (isValid) return this.successMessage() ? this.successMessage() : this.helpMessage();
-      const firstKeyError: string = ValidatorService.getFirstFieldError(this.control)!;
-      const error = this.control!.getError(firstKeyError);
-      let errorMessage: string = "Hay un error en este campo";
-      if(typeof error === 'boolean'){
-        errorMessage = ValidatorService.validationMessages[firstKeyError] ?? errorMessage;
-      }else if(typeof error === 'string'){
-        errorMessage = error.toString();
-      }
-      return errorMessage;
+      if (status === 'VALID') return this.successMessage() ? this.successMessage() : this.helpMessage();
+      if (status === 'PENDING') return;
+      const controlError: string = this.controlError()!;
+      const error: string = ValidatorService.getFieldErrorMessage(this.control, controlError);
+      return error;
     });
   
     public changeMessageEffect: EffectRef = effect(() => {
