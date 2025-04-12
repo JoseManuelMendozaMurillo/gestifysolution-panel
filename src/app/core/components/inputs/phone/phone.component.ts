@@ -7,7 +7,7 @@ import { SelectCountryPhoneCodeComponent } from "./components/select-country-pho
 import { InputPhoneComponent } from './components/input-phone/input-phone.component';
 import { CoreValidationsService } from '../../../validations/core-validations.service';
 import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription, switchMap } from 'rxjs';
 
 
 @Component({
@@ -60,14 +60,15 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
   })
   public status: WritableSignal<FormControlStatus | undefined> = signal(undefined);
   public controlError: WritableSignal<string | null> = signal(null);
-  
-  @ViewChild(InputPhoneComponent) 
-  private phoneInputComponent: InputPhoneComponent|null = null;
+
+  @ViewChild(InputPhoneComponent)
+  private phoneInputComponent: InputPhoneComponent | null = null;
 
   private $subsPhoneControlEventChanges?: Subscription;
   private $subsPhoneControlValueChanges?: Subscription;
   private $subsCountryControlValueChanges?: Subscription;
   private $subsStatusChanges?: Subscription;
+  private $subsEventChanges?: Subscription;
 
   // Getters
   get phoneControl(): FormControl {
@@ -82,48 +83,71 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
   public override ngOnInit(): void {
     super.ngOnInit();
 
-    this.status.set(this.control.status)
+    this.$subsEventChanges = this.control.events.subscribe((event: ControlEvent<any>) => {
+      if (event instanceof TouchedChangeEvent) {
+        if (!event.touched) {
+          this.status.set(undefined);
+          this.controlError.set(null);
+          this.phoneForm.markAsUntouched();
+        } else {
+          this.phoneForm.markAllAsTouched();
+        }
+      }
+    })
 
-    this.$subsStatusChanges = this.control.statusChanges.subscribe((status) => {
+    this.$subsStatusChanges = this.control.statusChanges.subscribe((status: FormControlStatus) => {
       this.status.set(status);
       const controlError: string | null = ValidatorService.getFirstFieldError(this.control);
       this.controlError.set(controlError);
     })
 
-
     this.$subsPhoneControlEventChanges = this.phoneControl.events.subscribe((event: ControlEvent<any>) => {
       if (event instanceof TouchedChangeEvent) {
-        this.control.markAsTouched();
-        const controlError: string | null = ValidatorService.getFirstFieldError(this.control);
-        this.controlError.set(controlError);
+        if(event.touched){
+          this.control.markAsTouched();
+          const controlError: string | null = ValidatorService.getFirstFieldError(this.control);
+          this.controlError.set(controlError);
+          this.status.set(this.control.status);
+        }
       }
     })
 
-    this.$subsPhoneControlValueChanges = this.phoneControl.valueChanges.subscribe((phone: any) => {
-      if (phone === null || phone === undefined || phone === '') phone = null;
-      else phone = Number(phone);
-      let value: any = this.phoneForm.value;
-      value.phone = phone
-      this.onChange(value);
-      this.onTouched();
-    })
+    this.$subsPhoneControlValueChanges = this.phoneControl.valueChanges
+      .pipe(
+        distinctUntilChanged()
+      )
+      .subscribe((phone: any) => {
+        if (phone === null || phone === undefined || phone === '') phone = null;
+        else phone = Number(phone);
+        let value: any = this.phoneForm.value;
+        value.phone = phone
+        this.onChange(value);
+        if(phone){
+          this.onTouched();
+        }
+      })
 
-    this.$subsCountryControlValueChanges = this.countryControl.valueChanges.subscribe((country: any) => {
-      let value: any = this.phoneForm.value;
-      value.country = country;
-      let phone = value.phone;
-      if (phone === null || phone === undefined || phone === '') phone = null;
-      else phone = Number(phone);
-      value.phone = phone;
-      this.onChange(value);
-      this.onTouched();
-      // Set focus to the input phone
-      this.phoneInputComponent?.focusInput();
-    });
+    this.$subsCountryControlValueChanges = this.countryControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+      )
+      .subscribe((country: any) => {
+        let value: any = this.phoneForm.value;
+        value.country = country;
+        let phone = value.phone;
+        if (phone === null || phone === undefined || phone === '') phone = null;
+        else phone = Number(phone);
+        value.phone = phone;
+        this.onChange(value);
+        this.onTouched();
+        // Set focus to the input phone
+        this.phoneInputComponent?.focusInput();
+      });
   }
 
   public override ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.$subsEventChanges?.unsubscribe();
     this.$subsStatusChanges?.unsubscribe();
     this.$subsPhoneControlEventChanges?.unsubscribe();
     this.$subsPhoneControlValueChanges?.unsubscribe();
@@ -138,6 +162,13 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
         const keyError: string = Object.keys(countryError)[0];
         const message: string = ValidatorService.validationMessages[keyError] ?? 'Error en el objeto country'
         throw new Error(message);
+      }
+    }
+
+    if(!value){
+      value = {
+        country: this.countryControl.value ?? null,
+        phone: null
       }
     }
     super.writeValue(value);

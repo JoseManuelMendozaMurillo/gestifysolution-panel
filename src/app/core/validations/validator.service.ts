@@ -13,8 +13,14 @@ export class ValidatorService {
 
     // Custom validations
     unknownError: 'Error desconocido',
+    notValidEmail: 'El correo electrónico no es valido',
     notValidUsername: 'El usuario contiene caracteres invalidos',
+    notValidName: 'El nomber contiene caracteres invalidos',
+    invalidDate: 'La fecha debe tener el formato (yyyy-mm-dd)',
+    futureDate: 'La fecha no puede ser mayor a la fecha actual',
     usernameTaken: 'Este usuario ya esta registrado',
+    emailTaken: 'Este correo electrónico ya esta registrado',
+    phoneTaken: 'Este número de telefono ya esta registrado',
     notOnlyNumbers: 'Este campo solo admite numeros',
 
     // Phone validations

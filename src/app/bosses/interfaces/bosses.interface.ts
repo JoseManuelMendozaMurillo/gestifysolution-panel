@@ -3,19 +3,19 @@ import { CreateUser, UpdateUser, User } from "../../shared/interfaces/users.inte
 
 export interface CreateBoss {
     user: CreateUser,
-    phone?: number,
-    birthdate?: Date
+    phone: string|null,
+    birthdate: Date|null
 }
 
 export interface UpdateBoss {
     user?: UpdateUser,
-    phone?: number,
+    phone?: string,
     birthdate?: Date
 }
 
 export interface Boss extends AuditTrail {
     id: number;
     user: User,
-    phone: number,
-    birthdate: Date
+    phone: string|null,
+    birthdate: string|null
 }

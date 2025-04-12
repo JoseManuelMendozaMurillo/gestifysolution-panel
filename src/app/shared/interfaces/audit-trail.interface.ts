@@ -1,13 +1,13 @@
 export interface AuditTimestamps {
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date;
+    createdAt: string|null;
+    updatedAt: string|null;
+    deletedAt: string|null;
 }
 
 export interface UserAuditTrail {
-    createdBy: string;
-    updatedBy: string;
-    deletedBy: string;
+    createdBy: string|null;
+    updatedBy: string|null;
+    deletedBy: string|null;
 }
 
 export interface AuditTrail extends AuditTimestamps, UserAuditTrail {

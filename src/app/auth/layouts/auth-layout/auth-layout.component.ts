@@ -24,7 +24,6 @@ export class AuthLayoutComponent implements OnInit {
     this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: NavigationEnd) => {
-      console.log(event.urlAfterRedirects);
       this.urlImg = this.AUTH_URL_IMG[event.urlAfterRedirects] || './assets/img/auth/sign-in.jpeg';
     });
   }

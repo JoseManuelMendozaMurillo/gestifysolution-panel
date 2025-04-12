@@ -19,4 +19,15 @@ export class SharedAsyncValidationsService {
       return isUsernameExist ? {usernameTaken: true} : null;
     }
   }
+
+  public isEmailExist(): AsyncValidatorFn {
+    return async (control: AbstractControl): Promise<ValidationErrors | null> => {
+      const email: string = control.value;
+      const isEmailExist: boolean = await this.authService.isEmailExist(email);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return isEmailExist ? {emailTaken: true} : null;
+    }
+  }
+
+  
 }

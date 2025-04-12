@@ -49,7 +49,7 @@ export class InputTextComponent extends InputControlValueAccessorDirective<strin
   }
 
   public message: Signal<string | undefined> = computed(() => {
-    const status: FormControlStatus | undefined = this.status();
+    const status: FormControlStatus | undefined = this.controlStatus();
     if (!this.control.touched) return this.helpMessage();
     if (status === 'VALID') return this.successMessage() ? this.successMessage() : this.helpMessage();
     if (status === 'PENDING') return;

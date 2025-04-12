@@ -9,4 +9,5 @@ export default class RegexUtils {
     static readonly EMAIL_PATTERN: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     static readonly USERNAME_PATTERN: RegExp = /^[a-zA-Z0-9_.@-]+$/;
     static readonly NAME_PATTERN: RegExp = /^[a-zA-ZñÑ ]+$/;
+    static readonly DATE_PATTERN: RegExp = /^\d{4}-\d{2}-\d{2}$/;
 }

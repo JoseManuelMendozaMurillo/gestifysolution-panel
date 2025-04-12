@@ -1,6 +1,6 @@
 import { Directive, inject, Injector, OnDestroy, OnInit, signal } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl, FormControlDirective, FormControlName, FormGroup, NgControl, NgModel, TouchedChangeEvent } from '@angular/forms';
-import { distinctUntilChanged, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[DefaultControlValueAccessor]',
@@ -17,7 +17,6 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
   public onChange: (value: T | null) => void = () => {};
   public onTouched: () => void = () => {};
 
-  private _$subsControlChanges?: Subscription;
   private _$subsNgModelChanges?: Subscription;
   private _control?: FormControl;
 
@@ -33,7 +32,6 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
 
   public ngOnDestroy(): void {
     this._$subsNgModelChanges?.unsubscribe();
-    this._$subsControlChanges?.unsubscribe();
   }
 
   public writeValue(value: T | null): void {
@@ -42,11 +40,6 @@ export class DefaultControlValueAccessorDirective<T> implements ControlValueAcce
 
   public registerOnChange(fn: any): void {
     this.onChange = fn;
-    this._$subsControlChanges = this.control.valueChanges.pipe(
-      distinctUntilChanged(),
-    ).subscribe((input) => {
-      this.onTouched();
-    });
   }
 
   public registerOnTouched(fn: any): void {
