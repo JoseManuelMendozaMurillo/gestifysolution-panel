@@ -11,16 +11,25 @@ export class SharedAsyncValidationsService {
 
   private authService: AuthService = inject(AuthService);
 
+  public isUsernameTaken(): AsyncValidatorFn {
+    return async (control: AbstractControl): Promise<ValidationErrors | null> => {
+      const username: string = control.value;
+      const isUsernameTaken: boolean = await this.authService.isUsernameExist(username);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return isUsernameTaken ? {usernameTaken: true} : null;
+    }
+  }
+
   public isUsernameExist(): AsyncValidatorFn {
     return async (control: AbstractControl): Promise<ValidationErrors | null> => {
       const username: string = control.value;
       const isUsernameExist: boolean = await this.authService.isUsernameExist(username);
       await new Promise(resolve => setTimeout(resolve, 800));
-      return isUsernameExist ? {usernameTaken: true} : null;
+      return !isUsernameExist ? {usernameNotExist: true} : null;
     }
   }
 
-  public isEmailExist(): AsyncValidatorFn {
+  public isEmailTaken(): AsyncValidatorFn {
     return async (control: AbstractControl): Promise<ValidationErrors | null> => {
       const email: string = control.value;
       const isEmailExist: boolean = await this.authService.isEmailExist(email);

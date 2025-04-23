@@ -53,7 +53,7 @@ export class SignUpComponent {
         Validators.minLength(3),
         Validators.maxLength(255),
       ],
-      [this.sharedAsyncValidations.isUsernameExist()]
+      [this.sharedAsyncValidations.isUsernameTaken()]
     ],
     email: [
       null,
@@ -61,7 +61,7 @@ export class SignUpComponent {
         Validators.required,
         this.sharedValidations.emailPattern()
       ],
-      [this.sharedAsyncValidations.isEmailExist()]
+      [this.sharedAsyncValidations.isEmailTaken()]
     ],
     firstName: [
       null,

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { firstValueFrom, map } from 'rxjs';
@@ -22,7 +22,9 @@ export class AuthService {
   private apiUrl: string = `${environment.API_URL}/auth`;
   private _authResponse: WritableSignal<AuthResponse | null> = signal(null);
   private _authStatus: WritableSignal<AuthStatus> = signal('checking');
-
+  private _lastHttpError: WritableSignal<HttpErrorResponse | null> = signal(null);
+  
+  public lastHttpError: Signal<HttpErrorResponse | null> = computed(() => this._lastHttpError());
   public authResponse: Signal<AuthResponse | null> = computed(() => this._authResponse());
   public authStatus: Signal<AuthStatus> = computed(() => {
     if (this._authStatus() === 'checking') return 'checking';
@@ -32,6 +34,7 @@ export class AuthService {
 
   public async login(login: Login): Promise<boolean> {
     try {
+      this._lastHttpError.set(null);
       const authResponse: AuthResponse = await firstValueFrom(
         this.http.post<AuthResponse>(`${this.apiUrl}/login`, login)
           .pipe(
@@ -49,6 +52,9 @@ export class AuthService {
       this.handleAuthSuccess(authResponse);
       return true;
     } catch (error) {
+      if(error instanceof HttpErrorResponse){
+        this._lastHttpError.set(error);
+      }
       this.handleAuthError();
       return false;
     }
@@ -84,9 +90,13 @@ export class AuthService {
 
   public async validateToken(token: String): Promise<boolean> {
     try {
+      this._lastHttpError.set(null);
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/validate-token`, { token }));
       return response.isValid;
     } catch (error: any) {
+      if(error instanceof HttpErrorResponse){
+        this._lastHttpError.set(error);
+      }
       console.error('An error occurred:', error.message);
       return false;
     }
@@ -94,6 +104,7 @@ export class AuthService {
 
   public async refreshToken(refreshToken: string): Promise<boolean> {
     try {
+      this._lastHttpError.set(null);
       const authResponse: AuthResponse = await firstValueFrom(
         this.http.post<AuthResponse>(`${this.apiUrl}/refresh-token`, {refreshToken})
           .pipe(
@@ -111,6 +122,9 @@ export class AuthService {
       this.handleAuthSuccess(authResponse);
       return true;
     } catch (error) {
+      if(error instanceof HttpErrorResponse){
+        this._lastHttpError.set(error);
+      }
       this.handleAuthError();
       return false;
     }
@@ -118,9 +132,13 @@ export class AuthService {
 
   public async isUsernameExist(username: string): Promise<boolean> {
     try {
+      this._lastHttpError.set(null);
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/check-username`, { username }));
       return response.exists;
     } catch (error: any) {
+      if(error instanceof HttpErrorResponse){
+        this._lastHttpError.set(error);
+      }
       console.error('An error occurred:', error.message);
       return false;
     }
@@ -128,9 +146,13 @@ export class AuthService {
 
   public async isEmailExist(email: string): Promise<boolean> {
     try {
+      this._lastHttpError.set(null);
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/check-email`, { email }));
       return response.exists;
     } catch (error: any) {
+      if(error instanceof HttpErrorResponse){
+        this._lastHttpError.set(error);
+      }
       console.error('An error occurred:', error.message);
       return false;
     }

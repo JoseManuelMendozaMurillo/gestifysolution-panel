@@ -1,42 +1,49 @@
-<main class="mx-auto p-3 md:p-0 w-full 2xl:w-[50%] xl:w-[60%] lg:w-[50%] md:w-[60%] flex items-center justify-center flex-col">
+<main
+    class="mx-auto p-3 md:p-0 w-full 2xl:w-[50%] xl:w-[60%] lg:w-[50%] md:w-[60%] flex items-center justify-center flex-col">
     <p class="text-xl font-bold text-neutral-900">Iniciar sesión</p>
-    <p class="mt-2 text-base font-semibold text-neutral-700">¿Necesitas una cuenta? 
-        <a class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500" routerLink="/auth/sign-up">Registrarse</a>
+    <p class="mt-2 text-base font-semibold text-neutral-700">¿Necesitas una cuenta?
+        <a class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+            routerLink="/auth/sign-up">Registrarse</a>
     </p>
     <div class="mt-3 flex items-center gap-2 justify-center w-full ps-1 pe-1">
         <hr class="w-full text-neutral-600">
         <span class="">o</span>
         <hr class="w-full text-neutral-600 ">
     </div>
+
+   
+        <!-- <div id="alertError"
+            [@unexpectedError]="unexpectedError() ? 'visible' : 'hidden' "
+            class="w-full p-4 mb-2 text-error-800 border border-error-300 rounded-lg bg-error-50 dark:bg-gray-800 dark:text-error-400 dark:border-error-800"
+            role="alert">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p class="text-sm font-medium">Error inesperado</p>
+            </div>
+            <div class="mt-2 mb-4 text-xs">
+                Porfavor intentelo de nuevo mas tarde
+            </div>
+            <button 
+                type="button"
+                class="text-error-800 bg-transparent border border-error-800 hover:bg-error-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-error-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-error-600 dark:border-error-600 dark:text-error-400 dark:hover:text-white dark:focus:ring-error-800"
+                data-dismiss-target="#alertError" 
+                aria-label="Close"
+                (click)="this.unexpectedError.set(false)">
+                Cerrar
+            </button>
+        </div> -->
+    
     <form action="" class="p-1 w-full flex flex-col gap-2" [formGroup]="form" (submit)="submit()">
-        <app-input-text-icon
-            inputType="text"
-            label="Usuario"
-            placeholder="wedin123"
-            identifier="user"
-            fontAwesomeIcon="fa-solid fa-user"
-            formControlName="email"
-        />
-        <app-input-text-icon
-            inputType="password"
-            label="Contraseña"
-            placeholder="••••••••"
-            identifier="password"
-            fontAwesomeIcon="fa-solid fa-lock"
-            formControlName="password"
-        />
+        <app-input-text-icon inputType="text" label="Usuario" placeholder="wedin123" identifier="user"
+            fontAwesomeIcon="fa-solid fa-user" formControlName="username" />
+        <app-input-text-icon inputType="password" label="Contraseña" placeholder="••••••••" identifier="password"
+            fontAwesomeIcon="fa-solid fa-lock" formControlName="password" />
         <div class="flex items-center justify-between">
-            <app-checkbox
-                label="Recuerdame"
-                formControlName="conditions"
-            />
-            <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">¿Olvidaste tu contraseña?</a>
+            <app-checkbox label="Recuerdame" formControlName="rememberMe" />
+            <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">¿Olvidaste tu
+                contraseña?</a>
         </div>
-        <button 
-            appLoadingButton 
-            [loading]="isLoading()"
-            [disabled]="isLoading()" 
-            type="submit" 
+        <button appLoadingButton [loading]="isLoading()" [disabled]="isLoading()" type="submit"
             class="btn btn-primary mt-3">
             <div class="flex justify-center items-center gap-2">
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
