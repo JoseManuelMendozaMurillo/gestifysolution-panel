@@ -1,17 +1,30 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { ErrorStateService } from '../../../shared/errors/error-state.service';
 
 @Component({
   selector: 'auth-layout',
   imports: [RouterOutlet],
   templateUrl: './auth-layout.component.html',
-  styleUrl: './auth-layout.component.css'
+  styleUrl: './auth-layout.component.css',
+  animations: [
+    trigger('unexpectedError', [
+      state('void', style({ opacity: 0, transform: 'translateX(10px)' })),
+      state('visible', style({ opacity: 1, transform: 'translateX(0)' })),
+      state('hidden', style({ opacity: 0, transform: 'translateX(10px)' })),
+      transition('void => visible', [animate('100ms ease-in-out')]),
+      transition('visible <=> hidden', [animate('100ms ease-in-out')]),
+    ]),
+  ],
 })
 export class AuthLayoutComponent implements OnInit {
 
   // Services
   private router: Router = inject(Router);
+
+  public errorStateService: ErrorStateService = inject(ErrorStateService);
 
   // Properties
   public AUTH_URL_IMG:{ [key: string]: string } = {

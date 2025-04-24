@@ -14,3 +14,20 @@
         <img class="h-full w-full object-cover" [src]="urlImg">
     </div>
 </div>
+
+<div id="alertError" [@unexpectedError]="this.errorStateService.unexpectedError() ? 'visible' : 'hidden' "
+    class="fixed right-4 bottom-4 z-50 w-full max-w-xs p-4 mb-2 text-error-800 border border-error-300 rounded-lg bg-error-50 dark:bg-gray-800 dark:text-error-400 dark:border-error-800"
+    role="alert">
+    <div class="flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p class="text-sm font-medium">Error inesperado</p>
+    </div>
+    <div class="mt-2 mb-4 text-xs">
+        Porfavor intentelo de nuevo mas tarde
+    </div>
+    <button type="button"
+        class="text-error-800 bg-transparent border border-error-800 hover:bg-error-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-error-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-error-600 dark:border-error-600 dark:text-error-400 dark:hover:text-white dark:focus:ring-error-800"
+        data-dismiss-target="#alertError" aria-label="Close" (click)="this.errorStateService.hideError()">
+        Cerrar
+    </button>
+</div>

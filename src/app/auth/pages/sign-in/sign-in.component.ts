@@ -8,7 +8,7 @@ import { SharedAsyncValidationsService } from '../../../shared/validations/share
 import { SharedValidationsService } from '../../../shared/validations/shared-validations.service';
 import { AuthService } from '../../services/auth.service';
 import { HttpStatusCode } from '@angular/common/http';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ErrorStateService } from '../../../shared/errors/error-state.service';
 
 @Component({
   selector: 'auth-sign-in',
@@ -21,15 +21,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
-  animations: [
-    trigger('unexpectedError', [
-      state('void', style({ opacity: 0, transform: 'translateY(-10px)' })),
-      state('visible', style({ opacity: 1, transform: 'translateY(0)' })),
-      state('hidden', style({ opacity: 0, transform: 'translateY(-10px)' })),
-      transition('void => visible', [animate('100ms ease-in-out')]),
-      transition('visible <=> hidden', [animate('100ms ease-in-out')]),
-    ]),
-  ],
 })
 export class SignInComponent implements OnInit {
 
@@ -41,6 +32,7 @@ export class SignInComponent implements OnInit {
   private router: Router = inject(Router);
 
   private authService: AuthService = inject(AuthService);
+  private errorStateService: ErrorStateService = inject(ErrorStateService);
 
   // Validators
   private sharedValidations: SharedValidationsService = inject(SharedValidationsService);
@@ -48,7 +40,6 @@ export class SignInComponent implements OnInit {
 
   // Properties
   public isLoading: WritableSignal<boolean> = signal<boolean>(false);
-  public unexpectedError: WritableSignal<boolean> = signal<boolean>(false);
 
   // Getters
   get username(): FormControl {
@@ -68,7 +59,7 @@ export class SignInComponent implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(255),
       ],
-      //[this.sharedAsyncValidations.isUsernameExist()]
+      [this.sharedAsyncValidations.isUsernameExist()]
     ],
     password: [
       null,
@@ -112,7 +103,7 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    this.unexpectedError.set(true);
+    this.errorStateService.showError();
   }
 
 
