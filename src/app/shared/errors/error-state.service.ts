@@ -9,13 +9,11 @@ export class ErrorStateService {
   // Properties
   public unexpectedError: WritableSignal<boolean> = signal(false);
 
-  private timeoutId: any = undefined;
+  private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   public showError(): void {
-    // Clear existing timeout if any
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
+    // Clear any existing timeout
+    this.clearTimeout();
 
     this.unexpectedError.set(true);
     this.timeoutId = setTimeout(() => {
@@ -24,6 +22,14 @@ export class ErrorStateService {
   }
 
   public hideError(): void {
+    this.clearTimeout();
     this.unexpectedError.set(false);
+  }
+
+  private clearTimeout(): void {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
   }
 }

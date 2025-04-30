@@ -1,0 +1,26 @@
+<div role="alert" id="alert">
+    <div class="flex items-center gap-2">
+        @if (icon) {
+            <ng-content select="alert-icon" />
+        } 
+        
+        @if (title) {
+            <div class="text-sm font-medium">
+                <ng-content select="alert-title" />
+            </div>
+        }
+    </div>
+
+    @if (description) {
+        <div class="mt-2 text-xs">
+            <ng-content select="alert-description" />
+        </div>
+    }
+
+
+    @if(actions){
+        <div class="flex gap-2 mt-4">
+            <ng-content select="alert-actions" />
+        </div>
+    }
+</div>

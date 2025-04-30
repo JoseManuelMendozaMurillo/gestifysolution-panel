@@ -1,21 +1,29 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { ErrorStateService } from '../../../shared/errors/error-state.service';
+import { DetailedAlertComponent } from "../../../core/components/alerts/detailed-alert/detailed-alert.component";
+import { AlertIconComponent } from "../../../core/components/alerts/components/alert-icon/alert-icon.component";
+import { AlertTitleComponent } from "../../../core/components/alerts/components/alert-title/alert-title.component";
+import { AlertDescriptionComponent } from "../../../core/components/alerts/components/alert-description/alert-description.component";
+import { AlertActionsComponent } from "../../../core/components/alerts/components/alert-actions/alert-actions.component";
 
 @Component({
   selector: 'auth-layout',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.css',
   animations: [
     trigger('unexpectedError', [
-      state('void', style({ opacity: 0, transform: 'translateX(10px)' })),
-      state('visible', style({ opacity: 1, transform: 'translateX(0)' })),
-      state('hidden', style({ opacity: 0, transform: 'translateX(10px)' })),
-      transition('void => visible', [animate('100ms ease-in-out')]),
-      transition('visible <=> hidden', [animate('100ms ease-in-out')]),
+      state('void', style({ opacity: 0, transform: 'translateX(100%)' })),  // Initial hidden state
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(100%)' }),
+        animate('250ms ease-in-out', style({ opacity: 1, transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('250ms ease-in-out', style({ opacity: 0, transform: 'translateX(100%)' }))
+      ])
     ]),
   ],
 })
