@@ -1,0 +1,70 @@
+<label 
+  [for]="identifier()" 
+  >
+    {{label()}}
+</label>
+<div class="relative">
+    <i [class]="fontAwesomeIcon()" class="icon"></i>
+    <input 
+      [type]="type()" 
+      [id]="identifier()" 
+      [name]="identifier()" 
+      [placeholder]="placeholder()" 
+      [formControl]="this.control!" 
+      [class.pristine-input]="!this.control.touched || status() === 'PENDING'" 
+      [class.invalid-input]="this.control.touched && status() === 'INVALID'"
+      [class.valid-input]="this.control.touched && status() === 'VALID'"
+      [ngClass]="{
+        '!pe-9': inputType() === 'password' || status() === 'PENDING',
+        '!pe-15': inputType() === 'password' && this.control.touched
+      }"
+    />
+    @if(inputType() === 'password'){
+      @if (statePassword()) {
+        <i class="fa-solid fa-eye-slash icon-password" 
+           (click)="hiddenPassword()"
+            [ngClass]="{
+              'right-3': !this.control.touched,
+              'right-9': this.control.touched
+            }"
+           >
+        </i>
+      }@else{
+        <i class="fa-solid fa-eye icon-password" 
+           (click)="showPassword()"
+           [ngClass]="{
+            'right-3': !this.control.touched,
+            'right-9': this.control.touched
+          }" 
+           >
+        </i>
+      }
+    }
+
+    @if(this.control.touched && status() === 'VALID') {
+        <i 
+            [@validationIcon]="this.control.touched && status() === 'VALID' ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-check valid-icon" 
+            >
+        </i>
+    }@else if(this.control.touched && status() === 'INVALID') {
+        <i 
+            [@validationIcon]="this.control.touched && status() === 'INVALID' ? 'visible' : 'hidden' "
+            class="fa-solid fa-circle-exclamation invalid-icon"
+            >
+        </i>
+    }@else if (this.control.touched && status() === 'PENDING') {
+        <app-spinner
+          [@validationIcon]="this.control.touched && status() === 'PENDING' ? 'visible' : 'hidden' " 
+          class="loading-icon"
+        />
+    }
+</div>
+<p 
+  [@validationMessage]="showMessage() ? 'visible' : 'hidden' "
+  [class.pristine-message]="!this.control.touched || this.control.touched && status() === 'VALID' && this.successMessage() === ''"
+  [class.invalid-message]="this.control.touched && status() === 'INVALID'"
+  [class.valid-message]="this.control.touched && status() === 'VALID' && this.successMessage()"
+  >
+  {{ delayedMessage() }}
+</p>

@@ -1,0 +1,34 @@
+<label [for]="identifier()">
+  {{ label() }}
+</label>
+<form [formGroup]="this.phoneForm" class="flex items-center" tabindex="-1">
+  <select-country-phone-code
+    formControlName="country"
+    [control]="this.control"
+    [focus]="focus"
+    [status]="status()"
+  />
+  <input-phone
+    formControlName="phone"
+    [identifier]="identifier()"
+    [parentControl]="this.control"
+    [placeholder]="placeholder()"
+    [focus]="focus"
+    [status]="status()"
+  />
+</form>
+<p
+  [@validationMessage]="showMessage() ? 'visible' : 'hidden'"
+  [class.pristine-message]="
+    !this.control.touched ||
+    (this.control.touched &&
+      status() === 'VALID' &&
+      this.successMessage() === '')
+  "
+  [class.invalid-message]="this.control.touched && status() === 'INVALID'"
+  [class.valid-message]="
+    this.control.touched && status() === 'VALID' && this.successMessage()
+  "
+>
+  {{ delayedMessage() }}
+</p>

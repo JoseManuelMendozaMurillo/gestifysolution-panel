@@ -1,0 +1,23 @@
+@reference "../../../../../styles.css";
+
+label {
+  @apply block mb-2 text-sm font-medium text-black dark:text-white;
+}
+
+p {
+  @apply ps-2 mt-1 text-xs transition delay-75;
+}
+
+.pristine-message {
+  @apply text-neutral-500 dark:text-neutral-500;
+}
+
+.invalid-message {
+  @apply text-error-600 dark:text-error-600;
+}
+
+.valid-message {
+  @apply text-success-600 dark:text-success-600;
+}
+
+

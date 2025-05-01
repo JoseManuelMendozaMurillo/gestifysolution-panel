@@ -1,0 +1,78 @@
+<button
+  (focus)="this.focus.set(true)"
+  (blur)="this.focus.set(false)"
+  id="dropdown-phone-button"
+  class="dropdown-phone-button"
+  [class.prestine-dropdown-phone-button]="
+    !this.control().touched || status() === 'PENDING'
+  "
+  [class.focus-prestine-ring]="
+    (!this.control().touched || status() === 'PENDING') && focus()
+  "
+  [class.invalid-dropdown-phone-button]="
+    this.control().touched && status() === 'INVALID'
+  "
+  [class.focus-invalid-ring]="
+    this.control().touched && status() === 'INVALID' && focus()
+  "
+  [class.valid-dropdown-phone-button]="
+    this.control().touched && status() === 'VALID'
+  "
+  [class.focus-valid-ring]="
+    this.control().touched && status() === 'VALID' && focus()
+  "
+  type="button"
+>
+  <div class="flex justify-center items-center gap-2">
+    <span>
+      {{ this.selectedCountry()?.flag }}
+    </span>
+    <span> +{{ this.selectedCountry()?.phoneExtension }} </span>
+  </div>
+  <i
+    class="fa-solid fa-caret-down"
+    [@caretRotate]="this.dropdown.isVisible() ? 'open' : 'closed'"
+  ></i>
+</button>
+<div
+  id="dropdown-phone"
+  [@dropdownAnimation]="this.dropdown.isVisible() ? 'open' : 'closed'"
+  class="hidden overflow-hidden z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-85 max-h-80 dark:bg-gray-700"
+>
+  <div class="p-3">
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass icon"></i>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        class="search-input"
+        placeholder="Buscar país"
+        [formControl]="search"
+      />
+    </div>
+  </div>
+  <hr />
+  <ul
+    class="h-[calc(100%-140px)] overflow-y-auto py-2 text-sm text-gray-700 dark:text-gray-200 custom-scrollbar"
+    aria-labelledby="dropdown-phone-button"
+  >
+    @for (country of filteredCountries(); track country.code) {
+    <button
+      type="button"
+      class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+      [value]="country"
+      (click)="onChangeCountry(country)"
+    >
+      {{ country.flag }} {{ country.name }} (+{{ country.phoneExtension }})
+    </button>
+    }@empty {
+    <button
+      type="button"
+      class="px-4 py-2 text-gray-500 dark:text-gray-400 text-center"
+    >
+      No se encontrarón resultados
+    </button>
+    }
+  </ul>
+</div>

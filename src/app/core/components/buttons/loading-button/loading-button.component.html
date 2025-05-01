@@ -1,0 +1,17 @@
+<div
+    [@spinnerAnimation]="showSpinner() ? 'visible' : 'hidden' " 
+    [style.display]="displaySpinnerStyle()"
+>
+    <div class="flex items-center justify-center gap-2">
+        <app-spinner class="w-4 h-4" />
+        <div>{{textLoading()}}</div>
+    </div>
+</div>
+<div  
+    [@spinnerAnimation]="showContent() ? 'visible' : 'hidden' "
+    [style.display]="displayContentStyle()"
+>
+    <ng-content > </ng-content>
+</div>
+
+

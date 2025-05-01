@@ -1,0 +1,60 @@
+@reference "../../../../../styles.css";
+
+label{
+  @apply block mb-2 text-sm font-medium text-black dark:text-white;
+}
+
+input {
+  @apply bg-white ps-9 transition-[padding] duration-200 ease-in-out placeholder-neutral-400 border text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white;
+}
+
+p {
+  @apply ps-2 mt-1 text-xs transition delay-75;
+}
+
+.pristine-input {
+  @apply pe-3 border-neutral-500 focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-600 dark:focus:border-primary-600;
+}
+
+.invalid-input {
+  @apply pe-9 border-error-600 focus:ring-error-600 focus:border-error-600  dark:focus:ring-error-600 dark:focus:border-error-600;
+}
+
+.valid-input {
+  @apply pe-9 border-success-600 focus:ring-success-600 focus:border-success-600  dark:focus:ring-success-600 dark:focus:border-success-600;
+}
+
+.pristine-message {
+  @apply text-neutral-500 dark:text-neutral-500;
+}
+
+.invalid-message {
+  @apply text-error-600 dark:text-error-600;
+}
+
+.valid-message {
+  @apply text-success-600 dark:text-success-600;
+}
+
+.icon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400;
+}
+
+.icon-password {
+  @apply absolute top-1/2 transform -translate-y-1/2 transition-all duration-200 ease-in-out;
+}
+
+.valid-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75;
+}
+
+.invalid-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75;
+}
+
+.loading-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 transition delay-75 w-4 h-4;
+}
+
+
+

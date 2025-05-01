@@ -1,0 +1,53 @@
+<div class="relative">
+  <i class="fa-solid fa-phone icon"></i>
+  <input
+    #phoneInput
+    type="tel"
+    (focus)="this.focus.set(true)"
+    (blur)="this.focus.set(false)"
+    class="phone-input"
+    [name]="identifier()"
+    [id]="identifier()"
+    [placeholder]="placeholder()"
+    [formControl]="this.control"
+    [class.pristine-input]="
+      !this.parentControl().touched || status() === 'PENDING'
+    "
+    [class.focus-prestine-ring]="
+      (!this.parentControl().touched || status() === 'PENDING') && focus()
+    "
+    [class.invalid-input]="this.parentControl().touched && status() === 'INVALID'"
+    [class.focus-invalid-ring]="
+      this.parentControl().touched && status() === 'INVALID' && focus()
+    "
+    [class.valid-input]="this.parentControl().touched && status() === 'VALID'"
+    [class.focus-valid-ring]="
+      this.parentControl().touched && status() === 'VALID' && focus()
+    "
+  />
+
+  @if(this.parentControl().touched && status() === 'VALID') {
+    <i
+        [@validationIcon]="
+            this.parentControl().touched && status() === 'VALID' ? 'visible' : 'hidden'
+        "
+        class="fa-solid fa-circle-check valid-icon"
+    >
+    </i>
+  }@else if(this.parentControl().touched && status() === 'INVALID') {
+    <i
+        [@validationIcon]="
+            this.parentControl().touched && status() === 'INVALID' ? 'visible' : 'hidden'
+        "
+        class="fa-solid fa-circle-exclamation invalid-icon"
+    >
+    </i>
+  }@else if (this.parentControl().touched && status() === 'PENDING') {
+    <app-spinner
+        [@validationIcon]="
+            this.parentControl().touched && status() === 'PENDING' ? 'visible' : 'hidden'
+        "
+        class="loading-icon"
+    />
+  }
+</div>
