@@ -140,7 +140,7 @@ export class AuthService {
         this._lastHttpError.set(error);
       }
       console.error('An error occurred:', error.message);
-      return true;
+      return false;
     }
   }
 
@@ -154,7 +154,7 @@ export class AuthService {
         this._lastHttpError.set(error);
       }
       console.error('An error occurred:', error.message);
-      return true;
+      return false;
     }
   }
 

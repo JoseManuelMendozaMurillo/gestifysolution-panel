@@ -8,13 +8,14 @@ export class ErrorStateService {
 
   // Properties
   public unexpectedError: WritableSignal<boolean> = signal(false);
+  public title: WritableSignal<string> = signal('Error inesperado');
+  public description: WritableSignal<string> = signal('Porfavor intentelo de nuevo mas tarde');
 
   private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   public showError(): void {
     // Clear any existing timeout
     this.clearTimeout();
-
     this.unexpectedError.set(true);
     this.timeoutId = setTimeout(() => {
       this.hideError();

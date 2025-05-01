@@ -180,13 +180,21 @@
     @apply bg-primary-400 cursor-not-allowed opacity-50;
   }
 
+  .btn-error {
+    @apply text-white bg-error-600 hover:bg-error-700  focus:ring-error-300  dark:bg-error-600 dark:hover:bg-error-700 dark:focus:ring-error-800;
+  }
+
+  .btn-error:disabled {
+    @apply bg-error-400 cursor-not-allowed opacity-50;
+  }
+
   /* alerts */
   .alert {
-    @apply z-50 p-4 mb-2 border rounded-lg
+    @apply z-50 p-4 border rounded-lg
   }
 
   .alert-status{
-    @apply fixed right-4 bottom-4 w-full max-w-xs 
+    @apply fixed right-4 bottom-4 w-full max-w-xs mb-2
   }
 
   .alert-error {

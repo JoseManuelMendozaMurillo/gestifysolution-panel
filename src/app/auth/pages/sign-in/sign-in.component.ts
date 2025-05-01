@@ -103,6 +103,8 @@ export class SignInComponent implements OnInit {
       return;
     }
 
+    this.errorStateService.title.set('Error inesperado');
+    this.errorStateService.description.set('Porfavor intentelo de nuevo mas tarde');
     this.errorStateService.showError();
   }
 

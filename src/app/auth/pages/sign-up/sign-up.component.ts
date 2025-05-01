@@ -13,6 +13,7 @@ import { CountryService } from '../../../core/services/country.service';
 import { BossesAsyncValidationsService } from '../../../bosses/validations/bosses-async-validations.service';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { ErrorStateService } from '../../../shared/errors/error-state.service';
 
 @Component({
   selector: 'auth-sing-up',
@@ -35,6 +36,7 @@ export class SignUpComponent {
   private bossesService: BossesService = inject(BossesService);
   private countryService: CountryService = inject(CountryService);
   private authService: AuthService = inject(AuthService);
+  private errorStateService: ErrorStateService = inject(ErrorStateService);
 
   // Validations
   private sharedValidations: SharedValidationsService = inject(SharedValidationsService);
@@ -120,7 +122,9 @@ export class SignUpComponent {
     const newBoss: Boss|null = await this.createBoss(bossData);
 
     if(newBoss === null) {
-      console.error('Error al crear el registro');
+      const titleError: string =  'Error al crear la cuenta';
+      const descriptionError: string =  'No se ha podido crear la cuenta';
+      this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
 
@@ -128,7 +132,9 @@ export class SignUpComponent {
     const isAuthenticated: boolean = await this.login(bossData);
     
     if(!isAuthenticated){
-      console.error('Error al iniciar sesión');
+      const titleError: string =  'Error al iniciar sesión';
+      const descriptionError: string =  'No se pudo iniciar sesión con la nueva cuenta';
+      this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
 
@@ -172,5 +178,13 @@ export class SignUpComponent {
     
     return isAuthenticated;
   } 
+
+  private handleUnexpectedError(title: string, description: string): void {
+    console.error(title, description);
+    this.errorStateService.title.set(title);
+    this.errorStateService.description.set(description);
+    this.errorStateService.showError();
+    this.isLoading.set(false);
+  }
 
 }
