@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { notAuthenticatedGuard } from './auth/guards/not-authenticated.guard';
 import { authenticatedGuard } from './auth/guards/authenticated.guard';
-import { AppComponent } from './app.component';
+import { LayoutComponent } from './layout/layout/layout.component';
+import { NavbarComponent } from './layout/components/navbar/navbar.component';
 
 export const routes: Routes = [
     {
@@ -14,9 +15,29 @@ export const routes: Routes = [
 
     {
         path: '',
-        loadComponent: () => AppComponent,
+        loadComponent: () => LayoutComponent,
         canMatch: [
             authenticatedGuard
         ]
-    }
+    },
+
+    {
+        path: 'bosses',
+        loadComponent: () => NavbarComponent,
+    },
+
+    {
+        path: 'businesses',
+        loadComponent: () => NavbarComponent,
+    },
+
+    {
+        path: 'branches1',
+        loadComponent: () => NavbarComponent,
+    },
+
+    {
+        path: 'branches2',
+        loadComponent: () => NavbarComponent,
+    },
 ];
