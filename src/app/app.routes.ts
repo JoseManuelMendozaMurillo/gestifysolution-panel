@@ -23,21 +23,21 @@ export const routes: Routes = [
 
     {
         path: 'bosses',
-        loadComponent: () => NavbarComponent,
+        loadComponent: () => LayoutComponent,
     },
 
     {
         path: 'businesses',
-        loadComponent: () => NavbarComponent,
+        loadComponent: () => LayoutComponent,
     },
 
     {
         path: 'branches1',
-        loadComponent: () => NavbarComponent,
+        loadComponent: () => LayoutComponent,
     },
 
     {
         path: 'branches2',
-        loadComponent: () => NavbarComponent,
+        loadComponent: () => LayoutComponent,
     },
 ];

@@ -1,1 +1,10 @@
-<p>navbar works!</p>
+<header class="border-gray-200 px-3 lg:px-3 py-3 ">
+        <a (click)="isSidebarActive.set(!isSidebarActive())" class="max-w-fit flex items-center gap-2 cursor-pointer">
+            <img [@rotateIcon]="isSidebarActive()"  src="./assets/logo.png" class="ms-1 w-12 h-12 object-cover" alt="Gestify solution logo" />
+            @if(this.isSidebarActive()){
+                <div [@sidebarAnimation]>
+                    <span class="self-center text-xl font-semibold whitespace-nowrap text-primary-600 select-none">Gestify solution</span>
+                </div>
+            }
+        </a>
+</header>

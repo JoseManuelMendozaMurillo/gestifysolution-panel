@@ -1,1 +1,7 @@
-<layout-sidebar/>
+<div class="min-h-screen flex flex-col">
+    <layout-navbar class="w-full"/>
+    <div class="bg-primary-50 flex-1 flex min-h-0">
+        <layout-sidebar />
+        <router-outlet class="flex-1"></router-outlet>
+    </div>
+</div>
