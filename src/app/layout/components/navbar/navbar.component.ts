@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate, keyframes, state, animateChild, group, query } from '@angular/animations';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, signal, WritableSignal } from '@angular/core';
 import { SidebarSatateService } from '../../services/sidebar-satate.service';
 import { CommonModule } from '@angular/common';
 
@@ -52,6 +52,26 @@ import { CommonModule } from '@angular/common';
       })),
       transition('collapsed <=> expanded', animate('200ms ease-in-out'))
     ]),
+
+    trigger('userProfileDropdownAnimation', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(-10%)'
+        }),
+        animate('150ms ease-in-out', style({
+          opacity: 1,
+          transform: 'translateY(0)'
+        }))
+      ]),
+      transition(':leave', [
+        animate('150ms ease-in-out', style({
+          opacity: 0,
+          transform: 'translateY(-10%)'
+        }))
+      ])
+    ]),
+
     // New combined animation trigger for synchronizing multiple animations
     trigger('sidebarStateChange', [
       transition('collapsed => expanded', [
@@ -79,10 +99,13 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class NavbarComponent {
-
   // Services
+  private elementRef: ElementRef = inject(ElementRef);
+
   public sidebarStateService: SidebarSatateService = inject(SidebarSatateService);
 
+  // Properties
+  public userProfileDropdownState: WritableSignal<boolean> = signal(false);
   public sidebarState = computed(() =>
     this.sidebarStateService.isOpen() ? 'expanded' : 'collapsed'
   );
@@ -93,6 +116,23 @@ export class NavbarComponent {
     } else {
       this.sidebarStateService.requestOpen();
     }
+  }
+
+  public toggleUserProfileDropdown() {
+    this.userProfileDropdownState.update((value: boolean) => !value)
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  public onClickOutside(target: HTMLElement) {
+    const clickedInside = this.elementRef.nativeElement.contains(target);
+    if (!clickedInside) {
+      this.userProfileDropdownState.set(false);
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  public onKeyPressEscape(event: KeyboardEvent) {
+    this.userProfileDropdownState.set(false);
   }
 
 }

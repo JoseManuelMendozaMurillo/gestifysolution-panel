@@ -1,4 +1,4 @@
-<header class="border-gray-200 pe-4 py-3 flex justify-between items-center">
+<header class="border-gray-200 pe-4 py-3 flex justify-between items-center relative overflow-visible z-10">
   <div class="max-w-fit flex items-center justify-center gap-2" [@sidebarStateChange]="sidebarStateService.isLargeScreen() ? sidebarState() : null">
     <div
       [@sidebarAnimation]="sidebarStateService.isLargeScreen() ? sidebarState() : null"
@@ -32,8 +32,21 @@
     </button>
     <div
       class="w-10 h-10 rounded-full bg-primary-700 text-white flex justify-center items-center"
+      (click)="toggleUserProfileDropdown()"
     >
-      <span class="font-bold text-xl">J</span>
+      <span class="font-bold text-xl select-none">J</span>
     </div>
   </div>
+  
+  @if(userProfileDropdownState()){
+    <div [@userProfileDropdownAnimation] class="min-w-fit absolute right-1 top-20 w-50 rounded-md p-4 bg-white flex flex-col shadow-xl">
+      <span class="font-semibold text-md ">Jose Manuel</span>
+      <span class="text-sm text-neutral-600 font-medium">Admin</span>
+      <hr class="w-full text-neutral-600 mt-2">
+      <button class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-300 hover:text-white">
+        <i class="fa-solid fa-arrow-right-to-bracket rotate-180"></i>
+        <span class="font-medium">Cerrar sesión</span>
+      </button>
+    </div>
+  }
 </header>
