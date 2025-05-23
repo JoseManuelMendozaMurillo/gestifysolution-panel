@@ -21,9 +21,9 @@ import { Subscription, filter } from 'rxjs';
             }"
         />
         <div 
-            class="text-sm tracking-wide font-medium select-none"
+            class="text-sm tracking-wide font-medium select-none text-nowrap overflow-hidden"
         >
-          <ng-content select="[menu-item-title]"></ng-content>
+          {{title()}}
         </div>
     </a>
   `,
@@ -32,7 +32,8 @@ import { Subscription, filter } from 'rxjs';
 export class MenuListItemComponent {
 
   // Inputs
-  public link: InputSignal<string> = input.required<string>();
+  public link: InputSignal<string> = input.required();
+  public title: InputSignal<string> = input.required();
 
   // Services
   private router: Router = inject(Router);

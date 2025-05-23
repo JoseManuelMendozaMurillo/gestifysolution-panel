@@ -1,10 +1,39 @@
-<header class="border-gray-200 px-3 lg:px-3 py-3 ">
-        <a (click)="isSidebarActive.set(!isSidebarActive())" class="max-w-fit flex items-center gap-2 cursor-pointer">
-            <img [@rotateIcon]="isSidebarActive()"  src="./assets/logo.png" class="ms-1 w-12 h-12 object-cover" alt="Gestify solution logo" />
-            @if(this.isSidebarActive()){
-                <div [@sidebarAnimation]>
-                    <span class="self-center text-xl font-semibold whitespace-nowrap text-primary-600 select-none">Gestify solution</span>
-                </div>
-            }
-        </a>
+<header class="border-gray-200 pe-4 py-3 flex justify-between items-center">
+  <div class="max-w-fit flex items-center justify-center gap-2" [@sidebarStateChange]="sidebarStateService.isLargeScreen() ? sidebarState() : null">
+    <div
+      [@sidebarAnimation]="sidebarStateService.isLargeScreen() ? sidebarState() : null"
+      class="items-center gap-1 hidden lg:visible lg:flex"
+    >
+      <img
+        [@rotateIcon]="sidebarStateService.isLargeScreen() ? sidebarState() : null"
+        src="./assets/logo.png"
+        class="w-12 object-cover ms-4"
+        alt="Gestify solution logo"
+      />
+      @if(sidebarStateService.isOpen() && sidebarStateService.isLargeScreen()){
+        <div [@titleAnimation]>
+            <span
+            class="self-center text-xl font-semibold whitespace-nowrap text-primary-600 select-none"
+            >Gestify solution</span
+            >
+        </div>
+      }
+    </div>
+    <button
+      (click)="toggleSidebar()"
+      class="z-40 text-lg p-2 w-11 h-11 rounded-full hover:bg-primary-50 transition-colors duration-200 ease-in-out cursor-pointer"
+    >
+      <i class="fa-solid fa-bars p-0"></i>
+    </button>
+  </div>
+  <div class="max-w-fit flex justify-end items-center gap-5">
+    <button class="text-xl">
+      <i class="fa-regular fa-sun"></i>
+    </button>
+    <div
+      class="w-10 h-10 rounded-full bg-primary-700 text-white flex justify-center items-center"
+    >
+      <span class="font-bold text-xl">J</span>
+    </div>
+  </div>
 </header>

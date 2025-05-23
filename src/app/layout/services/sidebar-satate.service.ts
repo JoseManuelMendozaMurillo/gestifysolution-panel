@@ -1,93 +1,103 @@
-import { computed, effect, Injectable, QueryList, signal, WritableSignal } from '@angular/core';
-import { MenuListComponent } from '../components/sidebar/components/menu-list/menu-list.component';
-
-interface CancellableSleep {
-  promise: Promise<void>;
-  cancel: () => void;
-}
+import { computed, effect, Injectable, signal, untracked, WritableSignal } from '@angular/core';
+import { Breakpoint } from '../../utils/enums/breakpoint.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarSatateService {
 
-  public isSidebarActive: WritableSignal<boolean> = signal(false);
-  public isSidebarActiveDelayed = signal(false);
-  public isAnyMenuListOpen = signal(false);
-  public isMenuItemShown = signal(false);
-  public isCenterIcon = signal(false);
+  public isOpen = signal(false);
+  public skipAnimation = signal(false);
+  public screenSize: WritableSignal<number | null> = signal(null);
+  public isLargeScreen: WritableSignal<boolean | null> = signal(null);
+  public requestedState = signal<'open' | 'close' | null>(null);
+  public animationPhase = signal<'open' | 'close' | 'opening-sidebar' | 'open-sidebar' | 'closing-sidebar' | 'opening-menu-list' | 'closing-menu-list' | 'close-menu-list'>('close')
+  public sidebarAnimationPhase = signal<'open' | 'close' | 'opening' | 'closing'>('close');
+  public menuItemAnimationPhase = signal<'open' | 'close' | 'opening' | 'closing'>('close');
+  public menuListAnimationPhase = signal<'open' | 'close' | 'opening' | 'closing'>('close');
+  public openMenuLists = signal<Set<string>>(new Set());
+  public openPopoverMenuLists = signal<Set<string>>(new Set());
 
-  private sidebarReference?: CancellableSleep;
-  private menuItemReference?: CancellableSleep;
-  private centerIconReference?: CancellableSleep;
+  private timeoutSkipAnimation: ReturnType<typeof setTimeout> | null = null;
 
-  constructor() {
-    effect((onCleanup) => {
-      const isActive = this.isSidebarActive();
-      const isAnyMenuListOpen = this.isAnyMenuListOpen();
+  public pendingClose = computed(() =>
+    this.requestedState() === 'close' && this.openMenuLists().size > 0
+  );
+  public pendingOpen = computed(() =>
+    this.requestedState() === 'open' && this.openPopoverMenuLists().size > 0
+  );
 
-      // Cancel previous timer
-      this.sidebarReference?.cancel();
-      this.menuItemReference?.cancel();
-      this.centerIconReference?.cancel();
+  private effectLargeScreen = effect(() => {
+    this.isOpen.set(false)
+    this.animationPhase.set('close');
+    this.sidebarAnimationPhase.set('close');
+    this.menuItemAnimationPhase.set('close');
+    this.menuListAnimationPhase.set('close');
 
-      // Create new timer
-      if(isActive && isAnyMenuListOpen){
-        this.sidebarReference = this.sleep(1);
-        this.menuItemReference = this.sleep(15);
-      }else if(isActive && !isAnyMenuListOpen){
-        this.sidebarReference = this.sleep(1);
-        this.menuItemReference = this.sleep(15);
-      }else if(!isActive && !isAnyMenuListOpen){
-        this.sidebarReference = this.sleep(15);
-        this.menuItemReference = this.sleep(1);
-        this.centerIconReference = this.sleep(200);
-      }else{
-        this.sidebarReference = this.sleep(216);
-        this.menuItemReference = this.sleep(201);
-        this.centerIconReference = this.sleep(417);
-      }
-      
-      // Handle cleanup
-      onCleanup(() => {
-        this.sidebarReference?.cancel();
-        this.menuItemReference?.cancel();
-        this.centerIconReference?.cancel();
-      });
+    if (!this.isLargeScreen()) {
+      this.openMenuLists().clear();
+      this.openPopoverMenuLists().clear();
+    }
+  });
 
-      this.sidebarReference?.promise
-        .then(() => this.isSidebarActiveDelayed.set(isActive))
-        .catch(() => {/* Handle cancellation if needed */});
+  private effectScreenSize = effect(() => {
+    const screenSize: number | null = this.screenSize();
+    if (screenSize === null) return;
 
-      this.menuItemReference?.promise
-        .then(() => this.isMenuItemShown.set(isActive))
-        .catch(() => {/* Handle cancellation if needed */});
-      
-      this.centerIconReference?.promise
-        .then(() => this.isCenterIcon.set(isActive))
-        .catch(() => {/* Handle cancellation if needed */});
+    // Synchronously set skipAnimation and process changes
+    this.skipAnimation.set(true);
+    this.clearTimeoutSkipAnimation();
+
+    // Force immediate change detection
+    queueMicrotask(() => {
+        const isLgScreen: boolean = screenSize >= Breakpoint.LG;
+        this.isLargeScreen.set(isLgScreen);
+        
+        // Schedule reset after Angular has processed changes
+        this.timeoutSkipAnimation = setTimeout(() => {
+            this.skipAnimation.set(false);
+        }, 1000);
     });
+  });
+
+  public requestClose() {
+    if (this.openMenuLists().size > 0) {
+      this.requestedState.set('close');
+    } else {
+      this.isOpen.set(false);
+    }
   }
 
-  private sleep(ms: number): CancellableSleep {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    let rejectFn: (reason?: Error) => void;
-
-    const promise = new Promise<void>((resolve, reject) => {
-      rejectFn = reject;
-      timeoutId = setTimeout(() => {
-        resolve();
-      }, ms);
-    });
-
-    return {
-      promise,
-      cancel: () => {
-        clearTimeout(timeoutId);
-        rejectFn();
-      }
-    };
+  public requestOpen() {
+    if (this.openPopoverMenuLists().size > 0) {
+      this.requestedState.set('open');
+    } else {
+      this.isOpen.set(true);
+    }
   }
+
+  public checkPendingClose() {
+    if (this.pendingClose() && this.openMenuLists().size === 0) {
+      this.isOpen.set(false);
+      this.requestedState.set(null);
+    }
+  }
+
+  public checkPendingOpen() {
+    if (this.requestedState() === 'open' && this.openPopoverMenuLists().size === 0) {
+      this.isOpen.set(true);
+      this.requestedState.set(null);
+    }
+  }
+
+
+  private clearTimeoutSkipAnimation(): void {
+    if (this.timeoutSkipAnimation) {
+      clearTimeout(this.timeoutSkipAnimation);
+      this.timeoutSkipAnimation = null;
+    }
+  }
+
 }
 
 

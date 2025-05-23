@@ -1,7 +1,22 @@
-<div class="min-h-screen flex flex-col">
-    <layout-navbar class="w-full"/>
+<div class="min-h-screen flex flex-col relative">
+    <layout-navbar class="w-full z-10"/>
     <div class="bg-primary-50 flex-1 flex min-h-0">
-        <layout-sidebar />
-        <router-outlet class="flex-1"></router-outlet>
+        <!-- Sidebar -->
+        <layout-sidebar 
+            class="absolute inset-y-0 left-0 z-30 lg:block lg:relative"
+            [class.hidden]="!this.sidebarStateService.isOpen() && this.sidebarStateService.animationPhase() === 'close'"
+        />
+        
+        <!-- Overlay that appears behind the sidebar on small screens -->
+        <div 
+            class="fixed inset-0 bg-gray-900 z-20 lg:hidden"
+            [@overlayAnimation]="overlayState()"
+            (click)="sidebarStateService.requestClose()"
+        ></div>
+        
+        <!-- Main content -->
+        <div class="flex-1 relative z-10">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

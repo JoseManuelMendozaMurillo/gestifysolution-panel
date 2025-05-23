@@ -1,52 +1,45 @@
-<aside 
-    [@sidebarAnimation]="sidebarState.isSidebarActiveDelayed() ? 'expanded' : 'collapsed'"
-    class="min-h-full text-white p-4 flex flex-col bg-white min-w-0 rounded-lg border-t-2 border-b-2 border-primary-100"
+<aside
+  [@sidebarAnimation]="
+    sidebarStateService.isLargeScreen() ? sidebarState() : null
+  "
+  (@sidebarAnimation.start)="onStartSidebarAnimation($event)"
+  (@sidebarAnimation.done)="onDoneSidebarAnimation($event)"
+  [@mobileSidebarAnimation]="
+    sidebarStateService.isLargeScreen() ? null : sidebarState()
+  "
+  (@mobileSidebarAnimation.start)="onStartMobileSidebarAnimation($event)"
+  (@mobileSidebarAnimation.done)="onDoneMobileSidebarAnimation($event)"
+  class="min-h-full text-white flex flex-col bg-white min-w-0 rounded-sm border-t-2 border-b-2 border-primary-100"
 >
-    <!-- Menu Items -->
-    <nav class="flex flex-col gap-3">
-        
-        <menu-item link="/bosses">
-            <i menu-item-icon class="fa-solid fa-user"></i>
-            <span menu-item-title>Jefes</span>
-        </menu-item>
+  <div
+    (click)="toggleSidebar()"
+    class="flex gap-1 items-center min-w-full py-2 ps-4 lg:hidden border-0 border-b-2 border-primary-100 cursor-pointer"
+  >
+    <img
+      src="./assets/logo.png"
+      class="w-12 object-cover"
+      alt="Gestify solution logo"
+    />
 
+    <span
+      class="self-center text-xl font-semibold whitespace-nowrap text-primary-600 select-none"
+    >
+      Gestify solution
+    </span>
+  </div>
 
-        <menu-list>
-            <i menu-item-icon class="fa-solid fa-store"></i>
-            <span menu-item-title>Sucursales</span>
-            <span menu-item-popover-title>Sucursales</span>
+  <!-- Menu Items -->
+  <nav class="flex flex-col gap-3 p-4">
+    <!-- <menu-item link="/bosses" title="Jefes">
+      <i menu-item-icon class="fa-solid fa-user"></i>
+    </menu-item> -->
 
-            <ng-template #menuListItemsContainer>
-                <menu-list-item link="/branches1">
-                    <span menu-item-title>Lista de sucursales</span>
-                </menu-list-item>
-    
-                <menu-list-item link="/branches2">
-                    <span menu-item-title>Nueva sucursal</span>
-                </menu-list-item>
-            </ng-template>
-        </menu-list>
+    <menu-list title="Negocios">
+      <i menu-item-icon  class="fa-solid fa-building"></i>
 
-        <menu-list>
-            <i menu-item-icon class="fa-solid fa-building"></i>
-            <span menu-item-title>Sucursales</span>
-            <span menu-item-popover-title>Sucursales</span>
-
-            <ng-template #menuListItemsContainer>
-                <menu-list-item link="/branches1">
-                    <span menu-item-title>Lista de sucursales</span>
-                </menu-list-item>
-    
-                <menu-list-item link="/branches2">
-                    <span menu-item-title>Nueva sucursal</span>
-                </menu-list-item>
-            </ng-template>
-        </menu-list>
-
-        <menu-item link="/businesses">
-            <i menu-item-icon class="fa-solid fa-building"></i>
-            <span menu-item-title>Empresas</span>
-        </menu-item>
-
-    </nav>
+      <ng-template #menuListItemsContainer>
+        <menu-list-item link="/businesses" title="Crear negocio" />
+      </ng-template>
+    </menu-list>
+  </nav>
 </aside>
