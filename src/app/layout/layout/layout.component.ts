@@ -5,9 +5,15 @@ import { RouterOutlet } from '@angular/router';
 import { SidebarSatateService } from '../services/sidebar-satate.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Breakpoint } from '../../utils/enums/breakpoint.enum';
+import { ErrorStateService } from '../../shared/errors/error-state.service';
+import { DetailedAlertComponent } from "../../core/components/alerts/detailed-alert/detailed-alert.component";
+import { AlertIconComponent } from "../../core/components/alerts/components/alert-icon/alert-icon.component";
+import { AlertTitleComponent } from "../../core/components/alerts/components/alert-title/alert-title.component";
+import { AlertDescriptionComponent } from "../../core/components/alerts/components/alert-description/alert-description.component";
+import { AlertActionsComponent } from "../../core/components/alerts/components/alert-actions/alert-actions.component";
 @Component({
   selector: 'app-layout',
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet],
+  imports: [SidebarComponent, NavbarComponent, RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   animations: [
@@ -26,7 +32,17 @@ import { Breakpoint } from '../../utils/enums/breakpoint.enum';
       transition('visible => hidden', [
         animate('200ms ease-in-out')
       ])
-    ])
+    ]),
+    trigger('unexpectedError', [
+      state('void', style({ opacity: 0, transform: 'translateX(100%)' })),  // Initial hidden state
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(100%)' }),
+        animate('250ms ease-in-out', style({ opacity: 1, transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('250ms ease-in-out', style({ opacity: 0, transform: 'translateX(100%)' }))
+      ])
+    ]),
   ]
 })
 export class LayoutComponent {
@@ -39,6 +55,7 @@ export class LayoutComponent {
 
   // Services
   public sidebarStateService: SidebarSatateService = inject(SidebarSatateService);
+  public errorStateService: ErrorStateService = inject(ErrorStateService);
 
   // Computed property for overlay state
   public overlayState = computed(() =>

@@ -43,7 +43,10 @@
       <span class="font-semibold text-md ">Jose Manuel</span>
       <span class="text-sm text-neutral-600 font-medium">Admin</span>
       <hr class="w-full text-neutral-600 mt-2">
-      <button class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-300 hover:text-white">
+      <button 
+        (click)="logout()"
+        class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-300 hover:text-white"
+      >
         <i class="fa-solid fa-arrow-right-to-bracket rotate-180"></i>
         <span class="font-medium">Cerrar sesión</span>
       </button>

@@ -2,6 +2,9 @@ import { trigger, transition, style, animate, keyframes, state, animateChild, gr
 import { Component, computed, ElementRef, HostListener, inject, signal, WritableSignal } from '@angular/core';
 import { SidebarSatateService } from '../../services/sidebar-satate.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../auth/services/auth.service';
+import { Router } from '@angular/router';
+import { ErrorStateService } from '../../../shared/errors/error-state.service';
 
 @Component({
   selector: 'layout-navbar',
@@ -101,8 +104,13 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent {
   // Services
   private elementRef: ElementRef = inject(ElementRef);
+  private router: Router = inject(Router);
 
   public sidebarStateService: SidebarSatateService = inject(SidebarSatateService);
+
+  private authService: AuthService = inject(AuthService);
+  private errorStateService: ErrorStateService = inject(ErrorStateService);
+
 
   // Properties
   public userProfileDropdownState: WritableSignal<boolean> = signal(false);
@@ -133,6 +141,19 @@ export class NavbarComponent {
   @HostListener('document:keydown.escape', ['$event'])
   public onKeyPressEscape(event: KeyboardEvent) {
     this.userProfileDropdownState.set(false);
+  }
+
+  public async logout(): Promise<void> {
+    const isLogout: boolean = await this.authService.logout();
+    if (isLogout) {
+      this.router.navigateByUrl('/auth/sign-in');
+    } else {
+      this.errorStateService.title.set('Error al cerrar sesión');
+      this.errorStateService.description.set('Porfavor intentelo de nuevo mas tarde');
+      this.errorStateService.showError();
+      console.error('Error al cerrar sesión');
+      this.userProfileDropdownState.set(false);
+    }
   }
 
 }

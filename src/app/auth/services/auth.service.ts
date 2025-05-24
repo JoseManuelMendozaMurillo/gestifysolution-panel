@@ -11,7 +11,7 @@ import { AuthStatus } from '../types/auth-status.type';
 })
 export class AuthService {
 
-  constructor() { 
+  constructor() {
     this.checkStatus();
   }
 
@@ -23,7 +23,7 @@ export class AuthService {
   private _authResponse: WritableSignal<AuthResponse | null> = signal(null);
   private _authStatus: WritableSignal<AuthStatus> = signal('checking');
   private _lastHttpError: WritableSignal<HttpErrorResponse | null> = signal(null);
-  
+
   public lastHttpError: Signal<HttpErrorResponse | null> = computed(() => this._lastHttpError());
   public authResponse: Signal<AuthResponse | null> = computed(() => this._authResponse());
   public authStatus: Signal<AuthStatus> = computed(() => {
@@ -52,7 +52,7 @@ export class AuthService {
       this.handleAuthSuccess(authResponse);
       return true;
     } catch (error) {
-      if(error instanceof HttpErrorResponse){
+      if (error instanceof HttpErrorResponse) {
         this._lastHttpError.set(error);
       }
       this.handleAuthError();
@@ -60,9 +60,38 @@ export class AuthService {
     }
   }
 
+  public async logout(): Promise<boolean> {
+    try {
+      this._lastHttpError.set(null);
+
+      const authData: string | null = localStorage.getItem('authData');
+
+      if (authData === null) {
+        this.handleAuthError();
+        return true;
+      }
+
+      const authResponse: AuthResponse = JSON.parse(authData);
+
+      const response = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/logout`, { refreshToken: authResponse.refreshToken })
+      );
+
+      this.handleAuthError();
+      return true;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        this._lastHttpError.set(error);
+      }
+
+      return false;
+    }
+  }
+
   public async checkStatus(): Promise<boolean> {
     const authData: string | null = localStorage.getItem('authData');
-    
+
     if (authData === null) {
       this.handleAuthError();
       return false;
@@ -72,14 +101,14 @@ export class AuthService {
 
     // check is token is valid
     const isTokenValid: boolean = await this.validateToken(authResponse.accessToken);
-    if(isTokenValid){
+    if (isTokenValid) {
       this.handleAuthSuccess(authResponse);
       return true;
     }
 
     // check if refresh token is valid
     const isRefreshTokenValid: boolean = await this.validateToken(authResponse.refreshToken);
-    if(isRefreshTokenValid){
+    if (isRefreshTokenValid) {
       const isTokenRefreshed: boolean = await this.refreshToken(authResponse.refreshToken);
       return isTokenRefreshed;
     }
@@ -94,7 +123,7 @@ export class AuthService {
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/validate-token`, { token }));
       return response.isValid;
     } catch (error: any) {
-      if(error instanceof HttpErrorResponse){
+      if (error instanceof HttpErrorResponse) {
         this._lastHttpError.set(error);
       }
       console.error('An error occurred:', error.message);
@@ -106,7 +135,7 @@ export class AuthService {
     try {
       this._lastHttpError.set(null);
       const authResponse: AuthResponse = await firstValueFrom(
-        this.http.post<AuthResponse>(`${this.apiUrl}/refresh-token`, {refreshToken})
+        this.http.post<AuthResponse>(`${this.apiUrl}/refresh-token`, { refreshToken })
           .pipe(
             map((response: any) => ({
               accessToken: response.access_token,
@@ -122,7 +151,7 @@ export class AuthService {
       this.handleAuthSuccess(authResponse);
       return true;
     } catch (error) {
-      if(error instanceof HttpErrorResponse){
+      if (error instanceof HttpErrorResponse) {
         this._lastHttpError.set(error);
       }
       this.handleAuthError();
@@ -136,7 +165,7 @@ export class AuthService {
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/check-username`, { username }));
       return response.exists;
     } catch (error: any) {
-      if(error instanceof HttpErrorResponse){
+      if (error instanceof HttpErrorResponse) {
         this._lastHttpError.set(error);
       }
       console.error('An error occurred:', error.message);
@@ -150,7 +179,7 @@ export class AuthService {
       const response: any = await firstValueFrom(this.http.post(`${this.apiUrl}/check-email`, { email }));
       return response.exists;
     } catch (error: any) {
-      if(error instanceof HttpErrorResponse){
+      if (error instanceof HttpErrorResponse) {
         this._lastHttpError.set(error);
       }
       console.error('An error occurred:', error.message);
