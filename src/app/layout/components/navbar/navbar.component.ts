@@ -102,13 +102,14 @@ import { ErrorStateService } from '../../../shared/errors/error-state.service';
   ]
 })
 export class NavbarComponent {
+  
   // Services
   private elementRef: ElementRef = inject(ElementRef);
   private router: Router = inject(Router);
 
   public sidebarStateService: SidebarSatateService = inject(SidebarSatateService);
+  public authService: AuthService = inject(AuthService);
 
-  private authService: AuthService = inject(AuthService);
   private errorStateService: ErrorStateService = inject(ErrorStateService);
 
 
