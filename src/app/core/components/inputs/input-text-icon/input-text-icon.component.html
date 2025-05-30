@@ -45,6 +45,7 @@
         <i 
             [@validationIcon]="this.control.touched && status() === 'VALID' ? 'visible' : 'hidden' "
             class="fa-solid fa-circle-check valid-icon" 
+            
             >
         </i>
     }@else if(this.control.touched && status() === 'INVALID') {

@@ -1,4 +1,8 @@
-<header class="border-gray-200 pe-4 py-3 flex justify-between items-center relative overflow-visible z-10">
+<header class="
+    border-gray-200 pe-4 py-3 flex justify-between items-center relative overflow-visible z-10 
+    dark:bg-neutral-800
+  "
+  >
   <div class="max-w-fit flex items-center justify-center gap-2" [@sidebarStateChange]="sidebarStateService.isLargeScreen() ? sidebarState() : null">
     <div
       [@sidebarAnimation]="sidebarStateService.isLargeScreen() ? sidebarState() : null"
@@ -21,15 +25,13 @@
     </div>
     <button
       (click)="toggleSidebar()"
-      class="z-40 text-lg p-2 w-11 h-11 rounded-full hover:bg-primary-50 transition-colors duration-200 ease-in-out cursor-pointer"
+      class="z-40 text-lg p-2 w-11 h-11 rounded-full hover:bg-primary-50 transition-colors duration-200 ease-in-out cursor-pointer dark:hover:bg-neutral-700"
     >
-      <i class="fa-solid fa-bars p-0"></i>
+      <i class="fa-solid fa-bars p-0 dark:text-white"></i>
     </button>
   </div>
-  <div class="max-w-fit flex justify-end items-center gap-5">
-    <button class="text-xl">
-      <i class="fa-regular fa-sun"></i>
-    </button>
+  <div class="max-w-fit flex justify-end items-center gap-3">
+    <app-theme-button/>
     <div
       class="w-10 h-10 rounded-full bg-primary-700 text-white flex justify-center items-center"
       (click)="toggleUserProfileDropdown()"
@@ -39,13 +41,13 @@
   </div>
   
   @if(userProfileDropdownState()){
-    <div [@userProfileDropdownAnimation] class="min-w-fit absolute right-1 top-20 w-50 rounded-md p-4 bg-white flex flex-col shadow-xl">
-      <span class="font-semibold text-md ">{{authService.tokenPayload()?.givenName}}</span>
-      <span class="text-sm text-neutral-600 font-medium">{{authService.tokenPayload()?.preferredUsername}}</span>
+    <div [@userProfileDropdownAnimation] class="min-w-fit absolute right-1 top-20 w-50 rounded-md p-4 bg-white flex flex-col shadow-xl dark:bg-neutral-800 dark:shadow-white/10">
+      <span class="font-semibold text-md dark:text-white">{{authService.tokenPayload()?.givenName}}</span>
+      <span class="text-sm text-neutral-600 font-medium dark:text-white/80">{{authService.tokenPayload()?.preferredUsername}}</span>
       <hr class="w-full text-neutral-600 mt-2">
       <button 
         (click)="logout()"
-        class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-300 hover:text-white"
+        class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-900/30 hover:text-white dark:text-white"
       >
         <i class="fa-solid fa-arrow-right-to-bracket rotate-180"></i>
         <span class="font-medium">Cerrar sesión</span>

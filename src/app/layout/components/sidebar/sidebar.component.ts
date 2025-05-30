@@ -4,10 +4,11 @@ import { MenuListComponent } from "./components/menu-list/menu-list.component";
 import { MenuListItemComponent } from "./components/menu-list-item/menu-list-item.component";
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { SidebarSatateService } from '../../services/sidebar-satate.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'layout-sidebar',
-  imports: [MenuListComponent, MenuListItemComponent],
+  imports: [CommonModule, MenuListComponent, MenuListItemComponent, MenuItemComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   animations: [

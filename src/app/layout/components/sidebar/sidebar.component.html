@@ -9,11 +9,14 @@
   "
   (@mobileSidebarAnimation.start)="onStartMobileSidebarAnimation($event)"
   (@mobileSidebarAnimation.done)="onDoneMobileSidebarAnimation($event)"
-  class="min-h-full text-white flex flex-col bg-white min-w-0 rounded-sm border-t-2 border-b-2 border-primary-100"
+  class="min-h-full text-white flex flex-col bg-white min-w-0 border-primary-100 dark:bg-neutral-800 dark:border-white"
+  [ngClass]="{
+    'rounded-sm border-t-1': sidebarStateService.isLargeScreen()
+  }" 
 >
   <div
     (click)="toggleSidebar()"
-    class="flex gap-1 items-center min-w-full py-2 ps-4 lg:hidden border-0 border-b-2 border-primary-100 cursor-pointer"
+    class="flex gap-1 items-center min-w-full py-2 ps-4 lg:hidden border-0 border-b-2 border-primary-100 cursor-pointer dark:border-white"
   >
     <img
       src="./assets/logo.png"
@@ -30,9 +33,9 @@
 
   <!-- Menu Items -->
   <nav class="flex flex-col gap-3 p-4">
-    <!-- <menu-item link="/bosses" title="Jefes">
+    <menu-item link="/bosses" title="Jefes">
       <i menu-item-icon class="fa-solid fa-user"></i>
-    </menu-item> -->
+    </menu-item>
 
     <menu-list title="Negocios">
       <i menu-item-icon  class="fa-solid fa-building"></i>

@@ -11,7 +11,7 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
   template: `
     <div class="relative">
       <a
-        class="flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50"     
+        class="flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50 dark:hover:bg-neutral-700"     
         (mouseenter)="isHovered.set(true)"
         (mouseleave)="isHovered.set(false)"
         [routerLink]="link()"
@@ -22,7 +22,7 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
                  'justify-center': sidebarState.sidebarAnimationPhase() === 'close'
                }"    
           >
-              <div class="text-base">
+              <div class="text-base dark:text-white" >
                 <ng-content select="[menu-item-icon]"></ng-content>
               </div>
               
@@ -32,7 +32,7 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
                   <div 
                     [@menuItemAnimation]
                     [@.disabled]="sidebarState.skipAnimation()"
-                    class="text-base tracking-wide select-none overflow-hidden"
+                    class="text-base tracking-wide select-none overflow-hidden dark:text-white"
                     [ngClass]="{
                       'font-semibold': !isActive(),
                       'font-bold': isActive(),
@@ -49,7 +49,7 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
               <i
                 [@menuItemAnimation]
                 [@.disabled]="sidebarState.skipAnimation()"
-                class="fa-solid fa-caret-down rotate-270"
+                class="fa-solid fa-caret-down rotate-270 dark:text-white"
               >
               </i>
           }

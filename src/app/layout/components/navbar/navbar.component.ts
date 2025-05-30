@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { ErrorStateService } from '../../../shared/errors/error-state.service';
+import { ThemeButtonComponent } from "../../../core/components/buttons/theme-button/theme-button.component";
 
 @Component({
   selector: 'layout-navbar',
-  imports: [CommonModule],
+  imports: [CommonModule, ThemeButtonComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   animations: [
@@ -101,8 +102,7 @@ import { ErrorStateService } from '../../../shared/errors/error-state.service';
     ])
   ]
 })
-export class NavbarComponent {
-  
+export class NavbarComponent {  
   // Services
   private elementRef: ElementRef = inject(ElementRef);
   private router: Router = inject(Router);

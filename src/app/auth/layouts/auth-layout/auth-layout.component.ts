@@ -8,10 +8,11 @@ import { AlertIconComponent } from "../../../core/components/alerts/components/a
 import { AlertTitleComponent } from "../../../core/components/alerts/components/alert-title/alert-title.component";
 import { AlertDescriptionComponent } from "../../../core/components/alerts/components/alert-description/alert-description.component";
 import { AlertActionsComponent } from "../../../core/components/alerts/components/alert-actions/alert-actions.component";
+import { ThemeButtonComponent } from "../../../core/components/buttons/theme-button/theme-button.component";
 
 @Component({
   selector: 'auth-layout',
-  imports: [RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent],
+  imports: [RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent, ThemeButtonComponent],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.css',
   animations: [

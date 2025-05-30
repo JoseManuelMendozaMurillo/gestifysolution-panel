@@ -23,9 +23,9 @@ type Deferred<T> = {
          (click)="onClickMenuList()"
          (mouseenter)="isHovered.set(true)"
          (mouseleave)="isHovered.set(false)"
-         class="flex items-center justify-between px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50"
+         class="flex items-center justify-between px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50 dark:hover:bg-neutral-700"
          [ngClass]="{
-           'text-white bg-primary-700 hover:bg-primary-700': isMenuListActive()
+           'text-white bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-700': isMenuListActive()
          }"
         
        >
@@ -35,7 +35,7 @@ type Deferred<T> = {
                'justify-center': sidebarState.sidebarAnimationPhase() === 'close'
             }"     
           >
-            <div class="text-base">
+            <div class="text-base dark:text-white">
                 <ng-content select="[menu-item-icon]"></ng-content>
             </div>
             
@@ -46,7 +46,7 @@ type Deferred<T> = {
                   [@menuItemAnimation]
                   [@.disabled]="sidebarState.skipAnimation()"
                   (@menuItemAnimation.done)="onMenuItemAnimationDone($event)"
-                  class="text-base tracking-wide select-none overflow-hidden"
+                  class="text-base tracking-wide select-none overflow-hidden dark:text-white"
                   [ngClass]="{
                     'font-semibold': !isMenuListActive(),
                     'font-bold': isMenuListActive(),
@@ -63,7 +63,7 @@ type Deferred<T> = {
               <i
                 [@menuItemAnimation]
                 [@.disabled]="sidebarState.skipAnimation()"
-                class="fa-solid fa-caret-down rotate-270"
+                class="fa-solid fa-caret-down rotate-270 dark:text-white"
                 [@caretRotate]="isMenuListOpen() ? 'open' : 'closed'"
               >
               </i>
@@ -87,13 +87,13 @@ type Deferred<T> = {
       
        @if(isMenuListPopoverOpen() && sidebarState.sidebarAnimationPhase() === 'close'){
             <div
-              class="w-max p-4 flex flex-col gap-0.5 absolute left-17 top-0 bg-white rounded-lg"
+              class="w-max p-4 flex flex-col gap-0.5 absolute left-17 top-0 bg-white rounded-lg dark:bg-neutral-800"
               [@accordionBody]
               [@.disabled]="sidebarState.skipAnimation()"
               (@accordionBody.start)="onStartAccordionBodyAnimationSidebarClose($event)"
               (@accordionBody.done)="onDoneAccordionBodyAnimationSidebarClose($event)"
             >   
-                <div class="mb-3 text-base tracking-wide select-none font-semibold text-neutral-800">
+                <div class="mb-3 text-base tracking-wide select-none font-semibold text-neutral-800 dark:text-white">
                     {{title()}}
                 </div>
 

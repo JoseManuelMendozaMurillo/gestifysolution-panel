@@ -8,9 +8,9 @@ import { Subscription, filter } from 'rxjs';
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
     <a
-        class="flex items-center gap-2 px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50"
+        class="flex items-center gap-2 px-4 py-3 rounded-lg transition-colors text-neutral-800 hover:bg-primary-50 dark:hover:bg-neutral-700"
         [routerLink]="link()"
-        routerLinkActive="text-primary-600 bg-primary-200 hover:bg-primary-300"
+        routerLinkActive="text-primary-600 bg-primary-900/30 hover:bg-primary-900/30 dark:hover:bg-primary-900/30"
     >
         <input
             type="radio"
@@ -22,6 +22,9 @@ import { Subscription, filter } from 'rxjs';
         />
         <div 
             class="text-sm tracking-wide font-medium select-none text-nowrap overflow-hidden"
+            [ngClass]="{
+              'dark:text-white': !isActive()
+            }"
         >
           {{title()}}
         </div>
