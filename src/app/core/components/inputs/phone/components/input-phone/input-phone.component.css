@@ -17,11 +17,11 @@
 }
 
 .valid-icon {
-  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75;
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75 dark:bg-white dark:rounded-lg;
 }
 
 .invalid-icon {
-  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75;
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75 dark:bg-white dark:rounded-lg;
 }
 
 .loading-icon {
@@ -30,15 +30,15 @@
 
 /* Shared styles */
 .focus-prestine-ring {
-  @apply ring-1 ring-primary-600;
+  @apply ring-1 ring-primary-600 border-primary-600;
 }
 
 .focus-valid-ring {
-  @apply ring-1 ring-success-600;
+  @apply ring-1 ring-success-600 border-success-600;
 }
 
 .focus-invalid-ring {
-  @apply ring-1 ring-error-600;
+  @apply ring-1 ring-error-600 border-error-600;
 }
 
 .icon {

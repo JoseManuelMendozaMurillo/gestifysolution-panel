@@ -10,7 +10,7 @@
       [id]="identifier()" 
       [name]="identifier()" 
       [placeholder]="placeholder()" 
-      [formControl]="this.control!" 
+      [formControl]="this.control!"
       [class.pristine-input]="!this.control.touched || status() === 'PENDING'" 
       [class.invalid-input]="this.control.touched && status() === 'INVALID'"
       [class.valid-input]="this.control.touched && status() === 'VALID'"
