@@ -6,10 +6,12 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { ErrorStateService } from '../../../shared/errors/error-state.service';
 import { ThemeButtonComponent } from "../../../core/components/buttons/theme-button/theme-button.component";
+import { SelectLanguageComponent } from "../../../core/components/inputs/select-language/select-language.component";
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'layout-navbar',
-  imports: [CommonModule, ThemeButtonComponent],
+  imports: [CommonModule, ThemeButtonComponent, SelectLanguageComponent, TranslatePipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   animations: [
@@ -106,7 +108,8 @@ export class NavbarComponent {
   // Services
   private elementRef: ElementRef = inject(ElementRef);
   private router: Router = inject(Router);
-
+  private translateService: TranslateService = inject(TranslateService);
+  
   public sidebarStateService: SidebarSatateService = inject(SidebarSatateService);
   public authService: AuthService = inject(AuthService);
 
@@ -149,10 +152,10 @@ export class NavbarComponent {
     if (isLogout) {
       this.router.navigateByUrl('/auth/sign-in');
     } else {
-      this.errorStateService.title.set('Error al cerrar sesión');
-      this.errorStateService.description.set('Porfavor intentelo de nuevo mas tarde');
+      this.errorStateService.title = this.translateService.stream('app.errors.unexpectedError.title');
+      this.errorStateService.description = this.translateService.stream('app.errors.unexpectedError.description');
       this.errorStateService.showError();
-      console.error('Error al cerrar sesión');
+      console.error('Failed to sign out.');
       this.userProfileDropdownState.set(false);
     }
   }

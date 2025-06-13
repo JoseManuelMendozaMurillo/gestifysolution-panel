@@ -4,6 +4,7 @@ import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, Writa
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { SidebarSatateService } from '../../../../services/sidebar-satate.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'menu-item',
@@ -38,7 +39,7 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
                       'font-bold': isActive(),
                     }" 
                   >
-                    {{title()}}
+                    {{titleTranslated()}}
                   </div>
               }
           </div>
@@ -63,11 +64,11 @@ import { SidebarSatateService } from '../../../../services/sidebar-satate.servic
                   rounded-sm bg-neutral-600 dark:bg-neutral-600
                   whitespace-nowrap select-none"
             [ngClass]="{
-              'left-1/2 -translate-x-1/2': title().length <= 13,
-              '-left-3': title().length >= 14
+              'left-1/2 -translate-x-1/2': titleTranslated().length <= 13,
+              '-left-3': titleTranslated().length >= 14
             }"
           >
-            {{title()}}
+            {{titleTranslated()}}
           </div>
       }
     </div>
@@ -115,17 +116,23 @@ export class MenuItemComponent implements OnInit, OnDestroy {
 
   // Services
   private router: Router = inject(Router);
+  private translateService: TranslateService = inject(TranslateService);
 
   public sidebarState: SidebarSatateService = inject(SidebarSatateService);
 
   // Properties
   public isActive: WritableSignal<boolean> = signal(false);
   public isHovered: WritableSignal<boolean> = signal(false);
+  public titleTranslated: WritableSignal<string> = signal('');
 
   private activeRouteSubscription: Subscription | null = null;
 
   // Lifecycle methods
   public ngOnInit(): void {
+    this.translateService.stream(this.title()).subscribe((title: string) => {
+      this.titleTranslated.set(title);
+    });
+
     this.activeRouteSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

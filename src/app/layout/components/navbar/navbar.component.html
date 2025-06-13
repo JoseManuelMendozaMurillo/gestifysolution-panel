@@ -31,6 +31,7 @@
     </button>
   </div>
   <div class="max-w-fit flex justify-end items-center gap-3">
+    <app-select-language/>
     <app-theme-button/>
     <div
       class="w-10 h-10 rounded-full bg-primary-700 text-white flex justify-center items-center"
@@ -50,7 +51,9 @@
         class="flex items-center gap-1 mt-2 w-full text-neutral-600 text-sm p-2 rounded-md transition duration-150 ease-in-out hover:bg-primary-900/30 hover:text-white dark:text-white"
       >
         <i class="fa-solid fa-arrow-right-to-bracket rotate-180"></i>
-        <span class="font-medium">Cerrar sesión</span>
+        <span class="font-medium">
+          {{'app.layout.navbar.profile.linkLogout' | translate}}
+        </span>
       </button>
     </div>
   }

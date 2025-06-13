@@ -1,26 +1,28 @@
 <div
   class="mx-auto p-3 md:p-0 w-full 2xl:w-[80%] xl:w-[90%] lg:w-[80%] md:w-[90%] flex items-center justify-center flex-col"
 >
-  <p class="text-xl font-bold text-neutral-900 dark:text-white">Registrarse</p>
+  <p class="text-xl font-bold text-neutral-900 dark:text-white">{{ 'app.auth.signUp.title' | translate }}</p>
   <p class="mt-2 text-base font-semibold text-neutral-700 dark:text-neutral-400">
-    ¿Ya tienes una cuenta?
+    {{ 'app.auth.signUp.textHaveAccount' | translate }}
     <a
       class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
       routerLink="/auth/sign-in"
-      >Iniciar sesión</a
+    >
+      {{ 'app.auth.signUp.linkHaveAccount' | translate }}
+    </a
     >
   </p>
   <div class="mt-3 flex items-center gap-2 justify-center w-full ps-1 pe-1">
     <hr class="w-full text-neutral-600" />
-    <span class="dark:text-white">o</span>
+    <span class="dark:text-white">{{ 'app.auth.signUp.signUpOptions' | translate }}</span>
     <hr class="w-full text-neutral-600" />
   </div>
   <form class="p-1 w-full" [formGroup]="form" (submit)="submit()">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <app-input-text-icon
         inputType="text"
-        label="Nombre"
-        placeholder="Jose Manuel"
+        label="form.label.firstName"
+        placeholder="form.placeholder.firstName"
         identifier="firstName"
         fontAwesomeIcon="fa-solid fa-file-signature"
         formControlName="firstName"
@@ -28,8 +30,8 @@
 
       <app-input-text-icon
         inputType="text"
-        label="Apellidos"
-        placeholder="Mendoza Murillo"
+        label="form.label.lastName"
+        placeholder="form.placeholder.lastName"
         identifier="lastName"
         fontAwesomeIcon="fa-solid fa-file-signature"
         formControlName="lastName"
@@ -37,8 +39,8 @@
 
       <app-input-text-icon
         inputType="text"
-        label="Usuario"
-        placeholder="jose123"
+        label="form.label.user"
+        placeholder="form.placeholder.user"
         identifier="username"
         fontAwesomeIcon="fa-solid fa-user"
         formControlName="username"
@@ -46,8 +48,8 @@
 
       <app-input-text-icon
         inputType="text"
-        label="Correo electronico"
-        placeholder="jose@gmail.com"
+        label="form.label.email"
+        placeholder="form.placeholder.email"
         identifier="email"
         fontAwesomeIcon="fa-solid fa-envelope"
         formControlName="email"
@@ -55,14 +57,14 @@
 
       <app-input-phone
         identifier="tel"
-        label="Telefono"
-        placeholder="3921106055"
+        label="form.label.mobileNumber"
+        placeholder="form.placeholder.mobileNumber"
         formControlName="phone"
       />
 
       <app-input-text-icon
         inputType="date"
-        label="Año de nacimiento"
+        label="form.label.birthday"
         placeholder="01-12-2001"
         identifier="birthdate"
         fontAwesomeIcon="fa-solid fa-cake-candles"
@@ -71,7 +73,7 @@
 
       <app-input-text-icon
         inputType="password"
-        label="Contraseña"
+        label="form.label.password"
         placeholder="••••••••"
         identifier="password"
         fontAwesomeIcon="fa-solid fa-lock"
@@ -88,7 +90,7 @@
     >
       <div class="flex justify-center items-center gap-1">
         <i class="fa-solid fa-user-plus"></i>
-        <span class="">Registrarse</span>
+        <span class="">{{ 'app.auth.signUp.btnTextSignUp' | translate }}</span>
       </div>
     </button>
   </form>

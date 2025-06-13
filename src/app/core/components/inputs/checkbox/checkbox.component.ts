@@ -1,12 +1,14 @@
-import { Component, computed, effect, EffectRef, forwardRef, input, InputSignal, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, EffectRef, forwardRef, inject, input, InputSignal, signal, Signal, WritableSignal } from '@angular/core';
 import { FormControlStatus, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorService } from '../../../validations/validator.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { InputControlValueAccessorDirective } from '../../../directives/control-value-accessor/input-control-value-accessor.directive';
+import { TranslatePipe } from '@ngx-translate/core';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-checkbox',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.css',
   animations: [
@@ -29,11 +31,16 @@ import { InputControlValueAccessorDirective } from '../../../directives/control-
 })
 export class CheckboxComponent extends InputControlValueAccessorDirective<boolean> {
 
+  // Inputs
   public identifier: InputSignal<string | undefined> = input<string>();
   public label: InputSignal<string> = input.required<string>();
   public successMessage: InputSignal<string> = input<string>('');
   public helpMessage: InputSignal<string> = input<string>('');
 
+  // Services
+  private validatorService: ValidatorService = inject(ValidatorService);
+
+  // Properties
   public delayedMessage: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
   public showMessage: WritableSignal<boolean> = signal(true);
 
@@ -50,9 +57,9 @@ export class CheckboxComponent extends InputControlValueAccessorDirective<boolea
     }
     if (status === 'PENDING') return;
     const controlError: string = this.controlError()!;
-    const errorMessage: string = ValidatorService.getFieldErrorMessage(this.control, controlError);
+    const errorMessage: Observable<string> = this.validatorService.getFieldErrorMessage(this.control, controlError);
     const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
-    return `${errorIcon} <span>${errorMessage}</span>`;
+    return `${errorIcon} <span>${errorMessage.pipe(map(message => message))}</span>`;
   });
 
   public changeMessageEffect: EffectRef = effect(() => {

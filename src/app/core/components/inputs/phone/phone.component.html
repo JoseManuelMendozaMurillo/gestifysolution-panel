@@ -1,5 +1,5 @@
 <label [for]="identifier()">
-  {{ label() }}
+  {{ label() | translate }}
 </label>
 <form [formGroup]="this.phoneForm" class="flex items-center" tabindex="-1">
   <select-country-phone-code
@@ -30,5 +30,5 @@
     this.control.touched && status() === 'VALID' && this.successMessage()
   "
 >
-  {{ delayedMessage() }}
+  {{ delayedMessage() | async }}
 </p>

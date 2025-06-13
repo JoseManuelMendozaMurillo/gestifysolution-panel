@@ -8,7 +8,7 @@
     class="phone-input"
     [name]="identifier()"
     [id]="identifier()"
-    [placeholder]="placeholder()"
+    [placeholder]="placeholder() | translate"
     [formControl]="this.control"
     [class.pristine-input]="
       !this.parentControl().touched || status() === 'PENDING'

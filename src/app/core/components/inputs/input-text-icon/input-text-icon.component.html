@@ -1,7 +1,7 @@
 <label 
   [for]="identifier()" 
   >
-    {{label()}}
+    {{label() | translate}}
 </label>
 <div class="relative">
     <i [class]="fontAwesomeIcon()" class="icon"></i>
@@ -9,7 +9,7 @@
       [type]="type()" 
       [id]="identifier()" 
       [name]="identifier()" 
-      [placeholder]="placeholder()" 
+      [placeholder]="placeholder() | translate" 
       [formControl]="this.control!"
       [class.pristine-input]="!this.control.touched || status() === 'PENDING'" 
       [class.invalid-input]="this.control.touched && status() === 'INVALID'"
@@ -67,5 +67,5 @@
   [class.invalid-message]="this.control.touched && status() === 'INVALID'"
   [class.valid-message]="this.control.touched && status() === 'VALID' && this.successMessage()"
   >
-  {{ delayedMessage() }}
+  {{ delayedMessage() | async }}
 </p>

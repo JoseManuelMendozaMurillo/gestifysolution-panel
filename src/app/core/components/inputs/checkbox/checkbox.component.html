@@ -9,7 +9,7 @@
     </div>
     <div class="text-sm">
       <label [for]="identifier()" >
-        {{label()}}
+        {{label() | translate}}
       </label>
       <p 
           [@validationMessage]="showMessage() ? 'visible' : 'hidden' "

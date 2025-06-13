@@ -9,6 +9,7 @@ import { SharedValidationsService } from '../../../shared/validations/shared-val
 import { AuthService } from '../../services/auth.service';
 import { HttpStatusCode } from '@angular/common/http';
 import { ErrorStateService } from '../../../shared/errors/error-state.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'auth-sign-in',
@@ -18,6 +19,7 @@ import { ErrorStateService } from '../../../shared/errors/error-state.service';
     CheckboxComponent,
     LoadingButtonComponent,
     RouterModule,
+    TranslatePipe,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
@@ -30,7 +32,8 @@ export class SignInComponent implements OnInit {
   // Services
   private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
-
+  private translateService: TranslateService = inject(TranslateService);
+  
   private authService: AuthService = inject(AuthService);
   private errorStateService: ErrorStateService = inject(ErrorStateService);
 
@@ -103,8 +106,8 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    this.errorStateService.title.set('Error inesperado');
-    this.errorStateService.description.set('Porfavor intentelo de nuevo mas tarde');
+    this.errorStateService.title = this.translateService.stream('app.errors.unexpectedError.title');
+    this.errorStateService.description = this.translateService.stream('app.errors.unexpectedError.description');
     this.errorStateService.showError();
   }
 

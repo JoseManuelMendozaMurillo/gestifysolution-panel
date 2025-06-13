@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, filter } from 'rxjs';
 
 @Component({
@@ -26,7 +27,7 @@ import { Subscription, filter } from 'rxjs';
               'dark:text-white': !isActive()
             }"
         >
-          {{title()}}
+          {{titleTranslated()}}
         </div>
     </a>
   `,
@@ -40,14 +41,20 @@ export class MenuListItemComponent {
 
   // Services
   private router: Router = inject(Router);
+  private translateService: TranslateService = inject(TranslateService);
 
   // Properties
   public isActive: WritableSignal<boolean> = signal(false);
+  public titleTranslated: WritableSignal<string> = signal('');
 
   private activeRouteSubscription: Subscription | null = null;
 
   // Lifecycle methods
   public ngOnInit(): void {
+    this.translateService.stream(this.title()).subscribe((title: string) => {
+      this.titleTranslated.set(title);
+    });
+
     this.activeRouteSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

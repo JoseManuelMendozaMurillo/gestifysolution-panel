@@ -1,45 +1,50 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ValidationError } from '../../shared/interfaces/bad-request.interface';
+import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidatorService {
 
+  // Services
+  private translateService: TranslateService = inject(TranslateService);
+
   public static validationMessages: { [key: string]: string } = {
-    required: 'Este campo es obligatorio.',
-    email: 'Correo electrónico no valido',
+    required: 'app.validations.required',
+    email: 'app.validations.email.invalid',
 
     // Custom validations
-    unknownError: 'Error desconocido',
-    notValidEmail: 'El correo electrónico no es valido',
-    notValidUsername: 'El usuario contiene caracteres invalidos',
-    notValidName: 'El nomber contiene caracteres invalidos',
-    invalidDate: 'La fecha debe tener el formato (yyyy-mm-dd)',
-    invalidPassword: 'La contraseña es incorrecta',
-    futureDate: 'La fecha no puede ser mayor a la fecha actual',
-    usernameTaken: 'Este usuario ya esta registrado',
-    usernameNotExist: 'Este usuario no existe',
-    emailTaken: 'Este correo electrónico ya esta registrado',
-    phoneTaken: 'Este número de telefono ya esta registrado',
-    notOnlyNumbers: 'Este campo solo admite numeros',
+    unknownError: 'app.validations.unknownError',
+    notValidEmail: 'app.validations.email.invalid',
+    notValidUsername: 'app.validations.user.invalid',
+    notValidName: 'app.validations.name.invalid',
+    invalidDate: 'app.validations.date.invalid',
+    invalidPassword: 'app.validations.password.invalid',
+    futureDate: 'app.validations.date.future',
+    usernameTaken: 'app.validations.user.taken',
+    usernameNotExist: 'app.validations.user.notExist',
+    emailTaken: 'app.validations.email.taken',
+    phoneTaken: 'app.validations.phone.taken',
+    notOnlyNumbers: 'app.validations.number.onlyNumbers',
 
     // Phone validations
-    phoneRequired: 'Estructura de objeto de teléfono no válida',
-    phoneNumberRequired: 'El número de teléfono es obligatorio',
-    phoneNumberInvalidFormat: 'El teléfono debe ser un número válido',
-    phoneNumberTooShort: 'El número de teléfono es demasiado corto',
-    phoneNumberTooLong: 'El número de teléfono es demasiado largo',
-    phoneNumberInvalid: 'El número de teléfono no es válido',
+    phoneRequired: 'app.validations.phone.required',
+    phoneNumberRequired: 'app.validations.phone.numberRequired',
+    phoneNumberInvalidFormat: 'app.validations.phone.numberInvalidFormat',
+    phoneNumberTooShort: 'app.validations.phone.numberTooShort',
+    phoneNumberTooLong: 'app.validations.phone.numberTooLong',
+    phoneNumberInvalid: 'app.validations.phone.numberInvalid',
 
 
     // Country validations
-    countryRequired: 'Debe seleccionar un país',
-    countryMissingProperty: 'Propiedad faltante en el objeto país',
-    countryExtraProperties: 'Proiedades inesperadas en el objeto país',
-    countryInvalidPhoneExtension: 'Formato de extensión telefónica no válido',
-    countryCodeInvalid: 'El codigo de país no es valido'
+    countryRequired: 'app.validations.country.required',
+    countryMissingProperty: 'app.validations.country.missingProperty',
+    countryExtraProperties: 'app.validations.country.extraProperties',
+    countryInvalidPhoneExtension: 'app.validations.country.invalidPhoneExtension',
+    countryCodeInvalid: 'app.validations.country.codeInvalid'
 
   };
 
@@ -86,25 +91,25 @@ export class ValidatorService {
     return null;
   }
 
-  private static getErrorMessage(keyError: string, error: any): string {
-    let errorMessage: string = "Error desconocido";
-
-    console.log({ controlError: keyError, error });
+  private getErrorMessage(keyError: string, error: any): Observable<string> {
+    const unknownError: string = ValidatorService.validationMessages['unknownError'];
+    let errorMessage: Observable<string> = this.translateService.stream(unknownError);
 
     if (typeof error === 'boolean') {
-      errorMessage = ValidatorService.validationMessages[keyError] ?? errorMessage;
+      const error: string = ValidatorService.validationMessages[keyError] ?? unknownError;
+      errorMessage = this.translateService.stream(error);
     } else if (typeof error === 'string') {
-      errorMessage = error.toString();
+      errorMessage = this.translateService.stream(error);
     } else if (typeof error === 'object') {
       switch (keyError) {
         case 'minlength':
-          errorMessage = `Este campo requiere minimo ${error.requiredLength} caracteres.`
+          errorMessage = this.translateService.stream('app.validations.length.min', { length: error.requiredLength });
           break;
         case 'maxlength':
-          errorMessage = `Este campo requiere maximo ${error.requiredLength} caracteres.`
+          errorMessage = this.translateService.stream('app.validations.length.max', { length: error.requiredLength });
           break;
         case 'pattern':
-          errorMessage = `Este campo contiene caracteres invalidos o un formato invalido.`
+          errorMessage = this.translateService.stream('app.validations.pattern.invalid');
           break;
       }
     }
@@ -112,15 +117,15 @@ export class ValidatorService {
     return errorMessage;
   }
 
-  public static getFieldErrorMessage(field: FormControl, keyError: string): string {
+  public getFieldErrorMessage(field: FormControl, keyError: string): Observable<string> {
     const error: any = field.getError(keyError);
-    return ValidatorService.getErrorMessage(keyError, error);
+    return this.getErrorMessage(keyError, error);
   }
 
-  public static getGroupErrorMessage(group: FormGroup, keyError: string): string {
+  public getGroupErrorMessage(group: FormGroup, keyError: string): Observable<string> {
     let error = group.getError(keyError);
     if (error !== null) {
-      return ValidatorService.getErrorMessage(keyError, error);
+      return this.getErrorMessage(keyError, error);
     }
 
     for (const controlName of Object.keys(group.controls)) {
@@ -129,17 +134,17 @@ export class ValidatorService {
       if (control instanceof FormControl) {
         error = control.getError(keyError);
         if (error !== null) {
-          return ValidatorService.getErrorMessage(keyError, error); // Retorna inmediatamente
+          return this.getErrorMessage(keyError, error); // Retorna inmediatamente
         }
       } else if (control instanceof FormGroup) {
-        const nestedError = ValidatorService.getGroupErrorMessage(control, keyError);
+        const nestedError = this.getGroupErrorMessage(control, keyError);
         if (nestedError) {
           return nestedError;
         }
       }
     }
 
-    return ValidatorService.getErrorMessage(keyError, null);
+    return this.getErrorMessage(keyError, null);
   }
   public static setValidationErrors(errors: ValidationError[], form: FormGroup): void {
     if (errors.length === 0) return;

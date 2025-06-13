@@ -14,6 +14,7 @@ import { BossesAsyncValidationsService } from '../../../bosses/validations/bosse
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ErrorStateService } from '../../../shared/errors/error-state.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'auth-sing-up',
@@ -22,7 +23,8 @@ import { ErrorStateService } from '../../../shared/errors/error-state.service';
     LoadingButtonComponent,
     ReactiveFormsModule,
     RouterModule,
-    PhoneComponent
+    PhoneComponent,
+    TranslatePipe,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
@@ -32,7 +34,8 @@ export class SignUpComponent {
   // Services
   private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
-
+  private translateService: TranslateService = inject(TranslateService);
+  
   private bossesService: BossesService = inject(BossesService);
   private countryService: CountryService = inject(CountryService);
   private authService: AuthService = inject(AuthService);
@@ -122,8 +125,8 @@ export class SignUpComponent {
     const newBoss: Boss|null = await this.createBoss(bossData);
 
     if(newBoss === null) {
-      const titleError: string =  'Error al crear la cuenta';
-      const descriptionError: string =  'No se ha podido crear la cuenta';
+      const titleError: string =  'app.auth.signUp.errors.createAccountError.title';
+      const descriptionError: string =  'app.auth.signUp.errors.createAccountError.description';
       this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
@@ -132,8 +135,8 @@ export class SignUpComponent {
     const isAuthenticated: boolean = await this.login(bossData);
     
     if(!isAuthenticated){
-      const titleError: string =  'Error al iniciar sesión';
-      const descriptionError: string =  'No se pudo iniciar sesión con la nueva cuenta';
+      const titleError: string =  'app.auth.signUp.errors.signInError.title';
+      const descriptionError: string =  'app.auth.signUp.errors.signInError.description';
       this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
@@ -180,9 +183,9 @@ export class SignUpComponent {
   } 
 
   private handleUnexpectedError(title: string, description: string): void {
-    console.error(title, description);
-    this.errorStateService.title.set(title);
-    this.errorStateService.description.set(description);
+    console.error('Unexpected error');
+    this.errorStateService.title = this.translateService.stream(title);
+    this.errorStateService.description = this.translateService.stream(description);
     this.errorStateService.showError();
     this.isLoading.set(false);
   }

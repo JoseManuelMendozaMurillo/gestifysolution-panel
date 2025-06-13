@@ -33,15 +33,15 @@
 
   <!-- Menu Items -->
   <nav class="flex flex-col gap-3 p-4">
-    <menu-item link="/bosses" title="Jefes">
+    <menu-item link="/bosses" title="app.layout.sidebar.linkBosses">
       <i menu-item-icon class="fa-solid fa-user"></i>
     </menu-item>
 
-    <menu-list title="Negocios">
+    <menu-list title="app.layout.sidebar.listBusinesses.title">
       <i menu-item-icon  class="fa-solid fa-building"></i>
 
       <ng-template #menuListItemsContainer>
-        <menu-list-item link="/businesses" title="Crear negocio" />
+        <menu-list-item link="/businesses" title="app.layout.sidebar.listBusinesses.linkCreateBusiness" />
       </ng-template>
     </menu-list>
   </nav>

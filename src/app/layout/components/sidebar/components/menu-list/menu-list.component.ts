@@ -1,10 +1,11 @@
 import { trigger, transition, style, animate, state, AnimationEvent } from '@angular/animations';
-import { AfterViewInit, Component, ContentChild, ContentChildren, DestroyRef, effect, EffectRef, ElementRef, HostListener, inject, Injector, input, InputSignal, OnDestroy, QueryList, runInInjectionContext, signal, TemplateRef, untracked, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, ContentChild, ContentChildren, DestroyRef, effect, EffectRef, ElementRef, HostListener, inject, Injector, input, InputSignal, OnDestroy, OnInit, QueryList, runInInjectionContext, signal, TemplateRef, untracked, WritableSignal } from '@angular/core';
 import { combineLatest, map, startWith, Subscription, switchMap } from 'rxjs';
 import { MenuListItemComponent } from '../menu-list-item/menu-list-item.component';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { SidebarSatateService } from '../../../../services/sidebar-satate.service';
+import { TranslateService } from '@ngx-translate/core';
 
 type Deferred<T> = {
   promise: Promise<T>;
@@ -52,7 +53,7 @@ type Deferred<T> = {
                     'font-bold': isMenuListActive(),
                   }" 
                 >
-                  {{title()}}
+                  {{titleTranslated()}}
                 </div>
             }
           </div>
@@ -94,7 +95,7 @@ type Deferred<T> = {
               (@accordionBody.done)="onDoneAccordionBodyAnimationSidebarClose($event)"
             >   
                 <div class="mb-3 text-base tracking-wide select-none font-semibold text-neutral-800 dark:text-white">
-                    {{title()}}
+                    {{titleTranslated()}}
                 </div>
 
                 <ng-container [ngTemplateOutlet]="itemsContainer"></ng-container>
@@ -110,11 +111,11 @@ type Deferred<T> = {
                   rounded-sm bg-neutral-600 dark:bg-neutral-600
                   whitespace-nowrap select-none"
             [ngClass]="{
-              'left-1/2 -translate-x-1/2': title().length <= 13,
-              '-left-3': title().length >= 14
+              'left-1/2 -translate-x-1/2': titleTranslated().length <= 13,
+              '-left-3': titleTranslated().length >= 14
             }"
           >
-            {{title()}}
+            {{titleTranslated()}}
           </div>
         }
     </div>
@@ -197,7 +198,7 @@ type Deferred<T> = {
     ])
   ]
 })
-export class MenuListComponent implements AfterViewInit, OnDestroy {
+export class MenuListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ContentChildren(MenuListItemComponent) items!: QueryList<MenuListItemComponent>;
   @ContentChild('menuListItemsContainer') itemsContainer!: TemplateRef<any>;
@@ -209,6 +210,7 @@ export class MenuListComponent implements AfterViewInit, OnDestroy {
   private elementRef: ElementRef = inject(ElementRef);
   private destroyRef: DestroyRef = inject(DestroyRef);
   private injector: Injector = inject(Injector);
+  private translateService: TranslateService = inject(TranslateService);
 
   public sidebarState: SidebarSatateService = inject(SidebarSatateService);
 
@@ -218,6 +220,7 @@ export class MenuListComponent implements AfterViewInit, OnDestroy {
   public isMenuListPopoverOpen: WritableSignal<boolean> = signal(false);
   public isMenuListActive: WritableSignal<boolean> = signal(false);
   public isTemporarilyClosed: WritableSignal<boolean> = signal(false);
+  public titleTranslated: WritableSignal<string> = signal('');
   public isHovered = signal(false);
 
   private closeAnimationPromise: Deferred<void> | null = null;
@@ -226,6 +229,13 @@ export class MenuListComponent implements AfterViewInit, OnDestroy {
 
 
   // Lifecycle hooks
+
+  public ngOnInit(): void {
+    this.translateService.stream(this.title()).subscribe((title: string) => {
+      this.titleTranslated.set(title);
+    });
+  }
+
   public ngAfterViewInit(): void {
     this.activeRouteSubscription = this.items.changes.pipe(
       startWith(this.items),

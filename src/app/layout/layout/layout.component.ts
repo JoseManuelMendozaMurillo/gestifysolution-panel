@@ -11,9 +11,11 @@ import { AlertIconComponent } from "../../core/components/alerts/components/aler
 import { AlertTitleComponent } from "../../core/components/alerts/components/alert-title/alert-title.component";
 import { AlertDescriptionComponent } from "../../core/components/alerts/components/alert-description/alert-description.component";
 import { AlertActionsComponent } from "../../core/components/alerts/components/alert-actions/alert-actions.component";
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-layout',
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent],
+  imports: [TranslatePipe, SidebarComponent, NavbarComponent, RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent, CommonModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   animations: [
