@@ -5,169 +5,173 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-ExtraBold.ttf') format('truetype');
-    font-weight: 800;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-ExtraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: typography-primary;
-    src: url('../public/assets/fonts/Inter/Inter-Thin.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-  }
-  
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
 
-  h1 {
-    @apply text-6xl font-bold;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
 
-  h2 {
-    @apply text-6xl font-semibold;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
 
-  h3 {
-    @apply text-5xl font-semibold;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-ExtraBold.ttf")
+    format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
 
-  h4 {
-    @apply text-4xl font-semibold;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-ExtraLight.ttf")
+    format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
 
-  h5 {
-    @apply text-3xl font-medium;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
 
-  h6 {
-    @apply text-2xl font-medium;
-  }
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: typography-primary;
+  src: url("../public/assets/fonts/Inter/Inter-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+h1 {
+  @apply text-6xl font-bold;
+}
+
+h2 {
+  @apply text-6xl font-semibold;
+}
+
+h3 {
+  @apply text-5xl font-semibold;
+}
+
+h4 {
+  @apply text-4xl font-semibold;
+}
+
+h5 {
+  @apply text-3xl font-medium;
+}
+
+h6 {
+  @apply text-2xl font-medium;
+}
+
+@utility color-scheme-dark {
+  color-scheme: dark;
+}
 
 @theme {
-    --font-primary: typography-primary, monospace;
+  --font-primary: typography-primary, monospace;
 
-    --color-primary-50: #FAF4FF;
-    --color-primary-100: #F2E5FF;
-    --color-primary-200: #DAC0FE;
-    --color-primary-300: #C194FE;
-    --color-primary-400: #A664FF;
-    --color-primary-500: #8424FF;
-    --color-primary-600: #7500FD;
-    --color-primary-700: #7500FD;
-    --color-primary-800: #6800F7;
-    --color-primary-900: #5400EF;
+  --color-primary-50: #faf4ff;
+  --color-primary-100: #f2e5ff;
+  --color-primary-200: #dac0fe;
+  --color-primary-300: #c194fe;
+  --color-primary-400: #a664ff;
+  --color-primary-500: #8424ff;
+  --color-primary-600: #7500fd;
+  --color-primary-700: #7500fd;
+  --color-primary-800: #6800f7;
+  --color-primary-900: #5400ef;
 
-    --color-secondary-50: #EFF6FF;
-    --color-secondary-100: #DBEAFE;
-    --color-secondary-200: #BFDBFE;
-    --color-secondary-300: #93C5FD;
-    --color-secondary-400: #60A5FA;
-    --color-secondary-500: #3B82F6;
-    --color-secondary-600: #2563EB;
-    --color-secondary-700: #1D4ED8;
-    --color-secondary-800: #1E40AF;
-    --color-secondary-900: #1E3A8A;
+  --color-secondary-50: #eff6ff;
+  --color-secondary-100: #dbeafe;
+  --color-secondary-200: #bfdbfe;
+  --color-secondary-300: #93c5fd;
+  --color-secondary-400: #60a5fa;
+  --color-secondary-500: #3b82f6;
+  --color-secondary-600: #2563eb;
+  --color-secondary-700: #1d4ed8;
+  --color-secondary-800: #1e40af;
+  --color-secondary-900: #1e3a8a;
 
-    --color-neutral-50: #D9D9D9;
-    --color-neutral-100: #FAFBFD;
-    --color-neutral-200: #EAECF0;
-    --color-neutral-300: #D0D5DD;
-    --color-neutral-400: #98A2B3;
-    --color-neutral-500: #667085;
-    --color-neutral-600: #475467;
-    --color-neutral-700: #344054;
-    --color-neutral-800: #1D2939;
-    --color-neutral-900: #101828;
+  --color-neutral-50: #d9d9d9;
+  --color-neutral-100: #fafbfd;
+  --color-neutral-200: #eaecf0;
+  --color-neutral-300: #d0d5dd;
+  --color-neutral-400: #98a2b3;
+  --color-neutral-500: #667085;
+  --color-neutral-600: #475467;
+  --color-neutral-700: #344054;
+  --color-neutral-800: #1d2939;
+  --color-neutral-900: #101828;
 
-    --color-success-50: #F0FDF4;
-    --color-success-100: #DCFCE7;
-    --color-success-200: #BBF7D0;
-    --color-success-300: #86EFAC;
-    --color-success-400: #4ADE80;
-    --color-success-500: #22C55E;
-    --color-success-600: #16A34A;
-    --color-success-700: #15803D;
-    --color-success-800: #166534;
-    --color-success-900: #14532D;
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
 
-    --color-info-50: #EFF6FF;
-    --color-info-100: #DBEAFE;
-    --color-info-200: #BFDBFE;
-    --color-info-300: #93C5FD;
-    --color-info-400: #60A5FA;
-    --color-info-500: #3B82F6;
-    --color-info-600: #2563EB;
-    --color-info-700: #1D4ED8;
-    --color-info-800: #1E40AF;
-    --color-info-900: #1E3A8A;
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+  --color-info-800: #1e40af;
+  --color-info-900: #1e3a8a;
 
-    --color-warning-50: #FEFCE8;
-    --color-warning-100: #FEF9C3;
-    --color-warning-200: #FEF08A;
-    --color-warning-300: #FDE047;
-    --color-warning-400: #FACC15;
-    --color-warning-500: #EAB308;
-    --color-warning-600: #CA8A04;
-    --color-warning-700: #A16207;
-    --color-warning-800: #854D0E;
-    --color-warning-900: #713F12;
+  --color-warning-50: #fefce8;
+  --color-warning-100: #fef9c3;
+  --color-warning-200: #fef08a;
+  --color-warning-300: #fde047;
+  --color-warning-400: #facc15;
+  --color-warning-500: #eab308;
+  --color-warning-600: #ca8a04;
+  --color-warning-700: #a16207;
+  --color-warning-800: #854d0e;
+  --color-warning-900: #713f12;
 
-    --color-error-50: #FEF2F2;
-    --color-error-100: #FEE2E2;
-    --color-error-200: #FECACA;
-    --color-error-300: #FCA5A5;
-    --color-error-400: #F87171;
-    --color-error-500: #EF4444;
-    --color-error-600: #DC2626;
-    --color-error-700: #B91C1C;
-    --color-error-800: #991B1B;
-    --color-error-900: #7F1D1D;
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-300: #fca5a5;
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+  --color-error-800: #991b1b;
+  --color-error-900: #7f1d1d;
 }
 
 @layer components {
-
   .btn {
     @apply w-full focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
   }
@@ -190,15 +194,15 @@
 
   /* alerts */
   .alert {
-    @apply z-50 p-4 border rounded-lg
+    @apply z-50 p-4 border rounded-lg;
   }
 
-  .alert-status{
-    @apply fixed right-4 bottom-4 w-full max-w-xs mb-2
+  .alert-status {
+    @apply fixed right-4 bottom-4 w-full max-w-xs mb-2;
   }
 
   .alert-error {
-    @apply text-error-800 border-error-300 bg-error-50 dark:bg-gray-800 dark:text-error-400 dark:border-error-800
+    @apply text-error-800 border-error-300 bg-error-50 dark:bg-neutral-800 dark:text-error-400 dark:border-error-800;
   }
-
 }
+

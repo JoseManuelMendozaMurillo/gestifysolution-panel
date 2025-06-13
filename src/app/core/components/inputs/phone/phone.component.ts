@@ -7,12 +7,14 @@ import { SelectCountryPhoneCodeComponent } from "./components/select-country-pho
 import { InputPhoneComponent } from './components/input-phone/input-phone.component';
 import { CoreValidationsService } from '../../../validations/core-validations.service';
 import { DefaultControlValueAccessorDirective } from '../../../directives/control-value-accessor/default-control-value-accessor.directive';
-import { distinctUntilChanged, Subscription, switchMap } from 'rxjs';
+import { distinctUntilChanged, Observable, of, Subscription, switchMap } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-input-phone',
-  imports: [ReactiveFormsModule, SelectCountryPhoneCodeComponent, InputPhoneComponent],
+  imports: [CommonModule, ReactiveFormsModule, SelectCountryPhoneCodeComponent, InputPhoneComponent, TranslatePipe],
   templateUrl: './phone.component.html',
   styleUrl: './phone.component.css',
   animations: [
@@ -47,12 +49,14 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
 
   // Services
   private fb: FormBuilder = inject(FormBuilder);
-
+  private validatorService: ValidatorService = inject(ValidatorService);
+  private translateService: TranslateService = inject(TranslateService);
+  
   private coreValidations: CoreValidationsService = inject(CoreValidationsService);
 
   // Properties
   public focus: WritableSignal<boolean> = signal(false);
-  public delayedMessage: WritableSignal<string | undefined> = signal<string | undefined>(undefined);
+  public delayedMessage: WritableSignal<Observable<string> | undefined> = signal(undefined);
   public showMessage: WritableSignal<boolean> = signal(true);
   public phoneForm: FormGroup = this.fb.group({
     country: [null, []],
@@ -160,8 +164,8 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
       const countryError: ValidationErrors | null = this.coreValidations.validateCountry(value.country);
       if (countryError) {
         const keyError: string = Object.keys(countryError)[0];
-        const message: string = ValidatorService.validationMessages[keyError] ?? 'Error en el objeto country'
-        throw new Error(message);
+        const message: string = ValidatorService.validationMessages[keyError] ?? 'app.validation.unknownError'
+        throw new Error(this.translateService.instant(message));
       }
     }
 
@@ -176,13 +180,13 @@ export class PhoneComponent extends DefaultControlValueAccessorDirective<Phone> 
   }
 
   // Computed properties
-  public message: Signal<string | undefined> = computed(() => {
+  public message: Signal<Observable<string> | undefined> = computed(() => {
     const status: FormControlStatus | undefined = this.status();
     const controlError: string | null = this.controlError();
-    if (!this.control.touched) return this.helpMessage();
-    if (status === 'VALID') return this.successMessage() ? this.successMessage() : this.helpMessage();
+    if (!this.control.touched) return of(this.helpMessage());
+    if (status === 'VALID') return this.successMessage() ? of(this.successMessage()) : of(this.helpMessage());
     if (status === 'PENDING') return;
-    const error: string = ValidatorService.getFieldErrorMessage(this.control, controlError!);
+    const error: Observable<string> = this.validatorService.getFieldErrorMessage(this.control, controlError!);
     return error;
   });
 

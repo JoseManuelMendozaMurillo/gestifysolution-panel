@@ -11,12 +11,12 @@ export const authRoutes: Routes = [
             {
                 path: 'sign-in',
                 component: SignInComponent,
-                title: 'Iniciar sesión'
+                title: 'Sign in'
             },
             {
                 path: 'sign-up',
                 component: SignUpComponent,
-                title: 'Registrarse'
+                title: 'Sign up'
             },
             {
                 path: '**',

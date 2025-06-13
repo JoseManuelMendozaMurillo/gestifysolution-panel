@@ -1,4 +1,6 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -6,10 +8,13 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
 export class ErrorStateService {
   constructor() {}
 
+  // Services
+  private translateService: TranslateService = inject(TranslateService);
+
   // Properties
   public unexpectedError: WritableSignal<boolean> = signal(false);
-  public title: WritableSignal<string> = signal('Error inesperado');
-  public description: WritableSignal<string> = signal('Porfavor intentelo de nuevo mas tarde');
+  public title: Observable<string> = this.translateService.stream('errors.unexpectedError.title');
+  public description: Observable<string> = this.translateService.stream('errors.unexpectedError.description');
 
   private timeoutId: ReturnType<typeof setTimeout> | null = null;
 

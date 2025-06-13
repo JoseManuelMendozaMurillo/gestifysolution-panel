@@ -1,0 +1,40 @@
+<div class="min-h-screen flex flex-col relative">
+    <layout-navbar class="w-full"/>
+    <div class="bg-primary-50 flex-1 flex min-h-0 dark:bg-neutral-900">
+        <!-- Sidebar -->
+        <layout-sidebar 
+            class="absolute inset-y-0 left-0 lg:block lg:relative"
+            [class.hidden]="!this.sidebarStateService.isOpen() && this.sidebarStateService.animationPhase() === 'close'"
+            [class.z-30]="!this.sidebarStateService.isLargeScreen() || this.sidebarStateService.openPopoverMenuLists().size > 0"
+        />
+        
+        <!-- Overlay that appears behind the sidebar on small screens -->
+        <div 
+            class="fixed inset-0 bg-gray-900 z-20 lg:hidden"
+            [@overlayAnimation]="overlayState()"
+            (click)="sidebarStateService.requestClose()"
+        ></div>
+        
+        <!-- Main content -->
+        <div class="flex-1 relative">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+@if(errorStateService.unexpectedError()){
+    <app-detailed-alert [@unexpectedError] class="alert alert-error alert-status">
+        <alert-icon>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </alert-icon>
+        <alert-title>{{errorStateService.title | async}}</alert-title>
+        <alert-description>{{errorStateService.description | async}}</alert-description>
+        <alert-actions>
+            <button type="button"
+                class="bg-transparent text-error-800  border border-error-800 hover:bg-error-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-error-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-error-600 dark:border-error-600 dark:text-error-400 dark:hover:text-white dark:focus:ring-error-800"
+                (click)="errorStateService.hideError()">
+                {{ 'app.errors.btnTextClose' | translate }}
+            </button>
+        </alert-actions>
+    </app-detailed-alert>
+}

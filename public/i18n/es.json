@@ -1,0 +1,124 @@
+{
+  "app": {
+    "layout": {
+      "sidebar": {
+        "linkBosses": "Jefes",
+        "listBusinesses": {
+          "title": "Negocios",
+          "linkCreateBusiness": "Crear negocio"
+        }
+      },
+      "navbar": {
+        "profile": {
+          "linkLogout": "Cerrar sesión"
+        }
+      }
+    },
+    "auth": {
+      "signIn": {
+        "title": "Iniciar sesión",
+        "textNewAccount": "¿Necesitas una cuenta?",
+        "linkNewAccount": "Registrarse",
+        "signInOptions": "o",
+        "linkForgotPassword": "¿Olvidaste tu contraseña?",
+        "btnTextSignIn": "Iniciar sesión"
+      },
+      "signUp": {
+        "title": "Registrarse",
+        "textHaveAccount": "¿Ya tienes una cuenta?",
+        "linkHaveAccount": "Iniciar sesión",
+        "signUpOptions": "o",
+        "btnTextSignUp": "Registrarse",
+        "errors": {
+          "createAccountError": {
+            "title": "Error al crear la cuenta",
+            "description": "No se ha podido crear la cuenta."
+          },
+          "signInError": {
+            "title": "Error al iniciar sesión",
+            "description": "No se pudo iniciar sesión con la nueva cuenta"
+          }
+        }
+      }
+    },
+    "errors": {
+      "unexpectedError": {
+        "title": "Error inesperado",
+        "description": "Por favor, inténtelo de nuevo más tarde"
+      },
+      "btnTextClose": "Cerrar"
+    },
+    "validations": {
+      "user": {
+        "invalid": "El usuario contiene caracteres invalidos",
+        "notExist": "El usuario no existe",
+        "taken": "El usuario ya está registrado"
+      },
+      "email": {
+        "invalid": "El correo electrónico no es válido",
+        "taken": "El correo electrónico ya está registrado"
+      },
+      "password": {
+        "invalid": "La contraseña es incorrecta"
+      },
+      "name": {
+        "invalid": "El nombre contiene caracteres invalidos"
+      },
+      "date": {
+        "invalid": "La fecha no es válida",
+        "future": "La fecha no puede ser en el futuro"
+      },
+      "length": {
+        "min": "Este campo requiere minimo {{length}} caracteres.",
+        "max": "Este campo requiere maximo {{length}} caracteres."
+      },
+      "pattern": {
+        "invalid": "Este campo contiene caracteres invalidos o un formato invalido."
+      },
+      "phone": {
+        "taken": "Este número de telefono ya esta registrado",
+        "required": "Estructura de objeto de teléfono no válida",
+        "numberRequired": "El número de teléfono es obligatorio",
+        "numberInvalidFormat": "El teléfono debe ser un número válido",
+        "numberTooShort": "El número de teléfono es demasiado corto",
+        "numberTooLong": "El número de teléfono es demasiado largo",
+        "numberInvalid": "El número de teléfono no es válido"
+      },
+      "country": {
+        "required": "Debe seleccionar un país",
+        "missingProperty": "Propiedad faltante en el objeto país",
+        "extraProperties": "Propiedades inesperadas en el objeto país",
+        "invalidPhoneExtension": "Formato de extensión telefónica no válido",
+        "codeInvalid": "El código de país no es valido"
+      },
+      "number": {
+        "onlyNumbers": "Este campo solo admite numeros"
+      },
+      "required": "Este campo es obligatorio",
+      "unknownError": "Error desconocido"
+    }
+  },
+  "form": {
+    "label": {
+      "user": "Usuario",
+      "password": "Contraseña",
+      "rememberMe": "Recuerdame",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Correo electrónico",
+      "mobileNumber": "Número de celular",
+      "birthday": "Fecha de nacimiento"
+    },
+    "placeholder": {
+      "user": "wedin123",
+      "firstName": "Juan Manuel",
+      "lastName": "Mendez Partida",
+      "email": "juan@gmail.com",
+      "mobileNumber": "3921109642"
+    }
+  },
+  "languages": {
+    "spanish": "Español",
+    "english": "Inglés"
+  }
+}

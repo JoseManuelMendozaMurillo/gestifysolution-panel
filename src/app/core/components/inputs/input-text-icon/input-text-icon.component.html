@@ -1,7 +1,7 @@
 <label 
   [for]="identifier()" 
   >
-    {{label()}}
+    {{label() | translate}}
 </label>
 <div class="relative">
     <i [class]="fontAwesomeIcon()" class="icon"></i>
@@ -9,8 +9,8 @@
       [type]="type()" 
       [id]="identifier()" 
       [name]="identifier()" 
-      [placeholder]="placeholder()" 
-      [formControl]="this.control!" 
+      [placeholder]="placeholder() | translate" 
+      [formControl]="this.control!"
       [class.pristine-input]="!this.control.touched || status() === 'PENDING'" 
       [class.invalid-input]="this.control.touched && status() === 'INVALID'"
       [class.valid-input]="this.control.touched && status() === 'VALID'"
@@ -45,6 +45,7 @@
         <i 
             [@validationIcon]="this.control.touched && status() === 'VALID' ? 'visible' : 'hidden' "
             class="fa-solid fa-circle-check valid-icon" 
+            
             >
         </i>
     }@else if(this.control.touched && status() === 'INVALID') {
@@ -66,5 +67,5 @@
   [class.invalid-message]="this.control.touched && status() === 'INVALID'"
   [class.valid-message]="this.control.touched && status() === 'VALID' && this.successMessage()"
   >
-  {{ delayedMessage() }}
+  {{ delayedMessage() | async }}
 </p>

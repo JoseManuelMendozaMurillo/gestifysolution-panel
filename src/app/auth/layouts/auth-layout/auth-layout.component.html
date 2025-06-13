@@ -1,8 +1,14 @@
-<div class="flex gap-0 min-h-screen">
+<div class="flex gap-0 min-h-screen dark:bg-neutral-800">
     <div class="w-screen h-screen xl:w-[45%] flex flex-col">
-        <div class="mt-5 ml-3 flex items-center gap-1">
-            <img class="w-12 h-12 object-cover" src="./assets/logo.png" alt="">
-            <p class="text-primary-600 text-2xl font-bold">Gestify solution</p>
+        <div class="mt-5 ml-3 mr-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <img class="w-12 h-12 object-cover" src="./assets/logo.png" alt="">
+                <p class="text-primary-600 text-2xl font-bold hidden sm:inline">Gestify solution</p>
+            </div>
+            <div class="flex items-center justify-end gap-0.5 md:gap-2">
+                <app-select-language/>
+                <app-theme-button/>
+            </div>
         </div>
         <div class="flex-grow flex justify-center items-center">
             <div class="w-full">
@@ -10,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="w-[55%] h-screen hidden xl:block">
+    <div class="w-[55%] h-screen hidden xl:block bg-primary-50 dark:bg-neutral-700">
         <img class="h-full w-full object-cover" [src]="urlImg">
     </div>
 </div>
@@ -20,13 +26,13 @@
         <alert-icon>
             <i class="fa-solid fa-triangle-exclamation"></i>
         </alert-icon>
-        <alert-title>{{errorStateService.title()}}</alert-title>
-        <alert-description>{{errorStateService.description()}}</alert-description>
+        <alert-title>{{errorStateService.title | async}}</alert-title>
+        <alert-description>{{errorStateService.description | async }}</alert-description>
         <alert-actions>
             <button type="button"
                 class="bg-transparent text-error-800  border border-error-800 hover:bg-error-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-error-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-error-600 dark:border-error-600 dark:text-error-400 dark:hover:text-white dark:focus:ring-error-800"
                 (click)="errorStateService.hideError()">
-                Cerrar
+                {{ 'app.errors.btnTextClose' | translate }}
             </button>
         </alert-actions>
     </app-detailed-alert>

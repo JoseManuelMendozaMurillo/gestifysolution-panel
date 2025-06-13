@@ -3,10 +3,11 @@ import { DefaultControlValueAccessorDirective } from '../../../../../directives/
 import { FormControl, FormControlStatus, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from "../../../../icons/spinner/spinner.component";
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'input-phone',
-  imports: [ReactiveFormsModule, SpinnerComponent],
+  imports: [ReactiveFormsModule, SpinnerComponent, TranslatePipe],
   templateUrl: './input-phone.component.html',
   styleUrl: './input-phone.component.css',
   animations: [

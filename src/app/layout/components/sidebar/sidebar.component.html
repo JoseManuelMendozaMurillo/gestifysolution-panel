@@ -1,0 +1,48 @@
+<aside
+  [@sidebarAnimation]="
+    sidebarStateService.isLargeScreen() ? sidebarState() : null
+  "
+  (@sidebarAnimation.start)="onStartSidebarAnimation($event)"
+  (@sidebarAnimation.done)="onDoneSidebarAnimation($event)"
+  [@mobileSidebarAnimation]="
+    sidebarStateService.isLargeScreen() ? null : sidebarState()
+  "
+  (@mobileSidebarAnimation.start)="onStartMobileSidebarAnimation($event)"
+  (@mobileSidebarAnimation.done)="onDoneMobileSidebarAnimation($event)"
+  class="min-h-full text-white flex flex-col bg-white min-w-0 border-primary-100 dark:bg-neutral-800 dark:border-white"
+  [ngClass]="{
+    'rounded-sm border-t-1': sidebarStateService.isLargeScreen()
+  }" 
+>
+  <div
+    (click)="toggleSidebar()"
+    class="flex gap-1 items-center min-w-full py-2 ps-4 lg:hidden border-0 border-b-2 border-primary-100 cursor-pointer dark:border-white"
+  >
+    <img
+      src="./assets/logo.png"
+      class="w-12 object-cover"
+      alt="Gestify solution logo"
+    />
+
+    <span
+      class="self-center text-xl font-semibold whitespace-nowrap text-primary-600 select-none"
+    >
+      Gestify solution
+    </span>
+  </div>
+
+  <!-- Menu Items -->
+  <nav class="flex flex-col gap-3 p-4">
+    <menu-item link="/bosses" title="app.layout.sidebar.linkBosses">
+      <i menu-item-icon class="fa-solid fa-user"></i>
+    </menu-item>
+
+    <menu-list title="app.layout.sidebar.listBusinesses.title">
+      <i menu-item-icon  class="fa-solid fa-building"></i>
+
+      <ng-template #menuListItemsContainer>
+        <menu-list-item link="/businesses" title="app.layout.sidebar.listBusinesses.linkCreateBusiness" />
+      </ng-template>
+    </menu-list>
+  </nav>
+</aside>

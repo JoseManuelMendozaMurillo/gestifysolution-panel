@@ -1,0 +1,124 @@
+{
+  "app": {
+    "layout": {
+      "sidebar": {
+        "linkBosses": "Bosses",
+        "listBusinesses": {
+          "title": "Businesses",
+          "linkCreateBusiness": "Create business"
+        }
+      },
+      "navbar": {
+        "profile": {
+          "linkLogout": "Logout"
+        }
+      }
+    },
+    "auth": {
+      "signIn": {
+        "title": "Sign in",
+        "textNewAccount": "Need an account?",
+        "linkNewAccount": "Sign up",
+        "signInOptions": "or",
+        "linkForgotPassword": "Forgot password?",
+        "btnTextSignIn": "Sign in"
+      },
+      "signUp": {
+        "title": "Sign up",
+        "textHaveAccount": "Already have an account?",
+        "linkHaveAccount": "Sign in",
+        "signUpOptions": "or",
+        "btnTextSignUp": "Sign up",
+        "errors": {
+          "createAccountError": {
+            "title": "Failed to create the account",
+            "description": "Unable to create the account."
+          },
+          "signInError": {
+            "title": "Failed to sign in",
+            "description": "Failed to sign in with the new account"
+          }
+        }
+      }
+    },
+    "errors": {
+      "unexpectedError": {
+        "title": "Unexpected error",
+        "description": "Please try again later"
+      },
+      "btnTextClose": "Close"
+    },
+    "validations": {
+      "user": {
+        "invalid": "The user contains invalid characters",
+        "notExist": "The user does not exist",
+        "taken": "The user is already registered"
+      },
+      "email": {
+        "invalid": "The email is not valid",
+        "taken": "The email is already registered"
+      },
+      "password": {
+        "invalid": "The password is incorrect"
+      },
+      "name": {
+        "invalid": "The name contains invalid characters"
+      },
+      "date": {
+        "invalid": "The date is not valid",
+        "future": "The date cannot be in the future"
+      },
+      "length": {
+        "min": "This field requires a minimum of {{length}} characters.",
+        "max": "This field requires a maximum of {{length}} characters."
+      },
+      "pattern": {
+        "invalid": "This field contains invalid characters or an invalid format."
+      },
+      "phone": {
+        "taken": "This phone number is already registered",
+        "required": "Invalid phone object structure",
+        "numberRequired": "The phone number is required",
+        "numberInvalidFormat": "The phone number must be a valid number",
+        "numberTooShort": "The phone number is too short",
+        "numberTooLong": "The phone number is too long",
+        "numberInvalid": "The phone number is not valid"
+      },
+      "country": {
+        "required": "You must select a country",
+        "missingProperty": "Missing property in the country object",
+        "extraProperties": "Unexpected properties in the country object",
+        "invalidPhoneExtension": "Invalid phone extension format",
+        "codeInvalid": "The country code is not valid"
+      },
+      "number": {
+        "onlyNumbers": "This field only accepts numbers"
+      },
+      "required": "This field is required",
+      "unknownError": "Unknown error"
+    }
+  },
+  "form": {
+    "label": {
+      "user": "User",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "mobileNumber": "Mobile number",
+      "birthday": "Birthday"
+    },
+    "placeholder": {
+      "user": "john123",
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john@gmail.com",
+      "mobileNumber": "1234567890"
+    }
+  },
+  "languages": {
+    "spanish": "Spanish",
+    "english": "English"
+  }
+}

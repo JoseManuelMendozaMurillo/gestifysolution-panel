@@ -8,10 +8,14 @@ import { AlertIconComponent } from "../../../core/components/alerts/components/a
 import { AlertTitleComponent } from "../../../core/components/alerts/components/alert-title/alert-title.component";
 import { AlertDescriptionComponent } from "../../../core/components/alerts/components/alert-description/alert-description.component";
 import { AlertActionsComponent } from "../../../core/components/alerts/components/alert-actions/alert-actions.component";
+import { ThemeButtonComponent } from "../../../core/components/buttons/theme-button/theme-button.component";
+import { SelectLanguageComponent } from "../../../core/components/inputs/select-language/select-language.component";
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'auth-layout',
-  imports: [RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent],
+  imports: [CommonModule, RouterOutlet, DetailedAlertComponent, AlertIconComponent, AlertTitleComponent, AlertDescriptionComponent, AlertActionsComponent, ThemeButtonComponent, SelectLanguageComponent, TranslatePipe],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.css',
   animations: [
@@ -36,16 +40,16 @@ export class AuthLayoutComponent implements OnInit {
 
   // Properties
   public AUTH_URL_IMG:{ [key: string]: string } = {
-    '/auth/sign-in': './assets/img/auth/sign-in.jpeg',
-    '/auth/sign-up': './assets/img/auth/sign-up.jpeg',
+    '/auth/sign-in': './assets/img/auth/sign-in.svg',
+    '/auth/sign-up': './assets/img/auth/sign-up.svg',
   }; 
-  public urlImg: string = './assets/img/auth/sign-in.jpeg';
+  public urlImg: string = './assets/img/auth/sign-in.svg';
 
   public ngOnInit(): void {
     this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: NavigationEnd) => {
-      this.urlImg = this.AUTH_URL_IMG[event.urlAfterRedirects] || './assets/img/auth/sign-in.jpeg';
+      this.urlImg = this.AUTH_URL_IMG[event.urlAfterRedirects] || './assets/img/auth/sign-in.svg';
     });
   }
 

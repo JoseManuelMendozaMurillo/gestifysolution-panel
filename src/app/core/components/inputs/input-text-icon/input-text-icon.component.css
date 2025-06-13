@@ -5,7 +5,8 @@ label{
 }
 
 input {
-  @apply bg-white ps-9 transition-[padding] duration-200 ease-in-out placeholder-neutral-400 border text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white;
+  @apply bg-white ps-9 transition-[padding] duration-200 ease-in-out placeholder-neutral-400 border text-black text-sm rounded-sm block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white 
+          dark:color-scheme-dark
 }
 
 p {
@@ -41,15 +42,15 @@ p {
 }
 
 .icon-password {
-  @apply absolute top-1/2 transform -translate-y-1/2 transition-all duration-200 ease-in-out;
+  @apply absolute top-1/2 transform -translate-y-1/2 transition-all duration-200 ease-in-out dark:text-white;
 }
 
 .valid-icon {
-  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75;
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-success-600 transition delay-75 dark:bg-white dark:rounded-lg;
 }
 
 .invalid-icon {
-  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75;
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-error-600 transition delay-75 dark:bg-white dark:rounded-lg;
 }
 
 .loading-icon {

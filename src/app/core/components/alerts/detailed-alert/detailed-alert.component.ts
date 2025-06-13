@@ -18,7 +18,7 @@ export class DetailedAlertComponent implements OnInit {
   @ContentChild(AlertActionsComponent) actions?: AlertActionsComponent;
 
   ngOnInit(): void {
-    console.log(this.icon);
+    
   }
   
   public isVisible = input<boolean>(false);
