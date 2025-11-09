@@ -15,15 +15,18 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () => LayoutComponent,
+        children: [
+            {
+                path: 'businesses',
+                loadChildren: () => import('./businesses/businesses.routes'),
+            },
+            {
+                path: 'branches',
+                loadChildren: () => import('./branches/branches.routes'),
+            },
+        ],
         canMatch: [
             authenticatedGuard
         ]
     },
-
-    {
-        path: 'businesses',
-        loadComponent: () => LayoutComponent,
-    },
-
-
 ];

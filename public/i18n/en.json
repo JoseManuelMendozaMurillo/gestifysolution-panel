@@ -6,6 +6,10 @@
         "listBusinesses": {
           "title": "Businesses",
           "linkCreateBusiness": "Create business"
+        },
+        "listBranches": {
+          "title": "Branches",
+          "linkCreateBranch": "Create branch"
         }
       },
       "navbar": {

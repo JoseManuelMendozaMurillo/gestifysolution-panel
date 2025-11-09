@@ -1,5 +1,4 @@
 import { Component, computed, effect, inject, QueryList, untracked, ViewChildren } from '@angular/core';
-import { MenuItemComponent } from "./components/menu-item/menu-item.component";
 import { MenuListComponent } from "./components/menu-list/menu-list.component";
 import { MenuListItemComponent } from "./components/menu-list-item/menu-list-item.component";
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
@@ -8,7 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'layout-sidebar',
-  imports: [CommonModule, MenuListComponent, MenuListItemComponent, MenuItemComponent],
+  imports: [CommonModule, MenuListComponent, MenuListItemComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   animations: [

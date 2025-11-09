@@ -33,15 +33,23 @@
 
   <!-- Menu Items -->
   <nav class="flex flex-col gap-3 p-4">
-    <menu-item link="/bosses" title="app.layout.sidebar.linkBosses">
+    <!-- <menu-item link="/bosses" title="app.layout.sidebar.linkBosses">
       <i menu-item-icon class="fa-solid fa-user"></i>
-    </menu-item>
+    </menu-item> -->
 
-    <menu-list title="app.layout.sidebar.listBusinesses.title">
+    <menu-list title="app.layout.sidebar.listBusinesses.title" parentLink="businesses">
       <i menu-item-icon  class="fa-solid fa-building"></i>
 
       <ng-template #menuListItemsContainer>
-        <menu-list-item link="/businesses" title="app.layout.sidebar.listBusinesses.linkCreateBusiness" />
+        <menu-list-item link="/businesses/create-business" title="app.layout.sidebar.listBusinesses.linkCreateBusiness" />
+      </ng-template>
+    </menu-list>
+    
+    <menu-list title="app.layout.sidebar.listBranches.title" parentLink="branches">
+      <i menu-item-icon  class="fa-solid fa-code-branch"></i>
+
+      <ng-template #menuListItemsContainer>
+        <menu-list-item link="/branches/create-branch" title="app.layout.sidebar.listBranches.linkCreateBranch" />
       </ng-template>
     </menu-list>
   </nav>

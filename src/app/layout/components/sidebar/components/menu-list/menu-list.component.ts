@@ -1,11 +1,11 @@
 import { trigger, transition, style, animate, state, AnimationEvent } from '@angular/animations';
-import { AfterViewInit, Component, ContentChild, ContentChildren, DestroyRef, effect, EffectRef, ElementRef, HostListener, inject, Injector, input, InputSignal, OnDestroy, OnInit, QueryList, runInInjectionContext, signal, TemplateRef, untracked, WritableSignal } from '@angular/core';
-import { combineLatest, map, startWith, Subscription, switchMap } from 'rxjs';
+import { Component, ContentChild, ContentChildren, effect, EffectRef, ElementRef, HostListener, inject, input, InputSignal, OnDestroy, OnInit, QueryList, signal, TemplateRef, untracked, WritableSignal } from '@angular/core';
+import { filter, Subscription } from 'rxjs';
 import { MenuListItemComponent } from '../menu-list-item/menu-list-item.component';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { SidebarSatateService } from '../../../../services/sidebar-satate.service';
 import { TranslateService } from '@ngx-translate/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 type Deferred<T> = {
   promise: Promise<T>;
@@ -198,18 +198,18 @@ type Deferred<T> = {
     ])
   ]
 })
-export class MenuListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MenuListComponent implements OnInit, OnDestroy {
 
   @ContentChildren(MenuListItemComponent) items!: QueryList<MenuListItemComponent>;
   @ContentChild('menuListItemsContainer') itemsContainer!: TemplateRef<any>;
 
   // Inputs
   public title: InputSignal<string> = input.required();
+  public parentLink: InputSignal<string> = input.required();
 
   // Services
+  private router: Router = inject(Router);
   private elementRef: ElementRef = inject(ElementRef);
-  private destroyRef: DestroyRef = inject(DestroyRef);
-  private injector: Injector = inject(Injector);
   private translateService: TranslateService = inject(TranslateService);
 
   public sidebarState: SidebarSatateService = inject(SidebarSatateService);
@@ -234,32 +234,34 @@ export class MenuListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.translateService.stream(this.title()).subscribe((title: string) => {
       this.titleTranslated.set(title);
     });
-  }
 
-  public ngAfterViewInit(): void {
-    this.activeRouteSubscription = this.items.changes.pipe(
-      startWith(this.items),
-      switchMap((items: QueryList<MenuListItemComponent>) => {
-        return combineLatest(
-          items.map(item =>
-            runInInjectionContext(this.injector, () =>
-              toObservable(item.isActive)
-            )
-          )
-        );
-      }),
-      map(activeStates => activeStates.some(state => state)),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(anyActive => {
-      this.isMenuListActive.set(anyActive);
-    });
+    this.checkActiveMenuList();
 
+    this.activeRouteSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.checkActiveMenuList();
+        this.isMenuListPopoverOpen.set(false);
+        if (!this.sidebarState.isLargeScreen() && this.sidebarState.isOpen()) {
+          this.sidebarState.requestClose(); 
+        }
+      });
   }
 
   public ngOnDestroy(): void {
     this.activeRouteSubscription?.unsubscribe();
     this.deleteMenuFromMenuListOpen();
     this.deleteMenuFromMenuPopoverListOpen();
+  }
+
+  private checkActiveMenuList(): void {
+    const isMenuListActive: boolean = this.router.isActive(this.parentLink(), {
+      paths: 'subset',
+      queryParams: 'ignored',
+      matrixParams: 'ignored',
+      fragment: 'ignored'
+    });
+    this.isMenuListActive.set(isMenuListActive);
   }
 
   public onClickMenuList(): void {
@@ -270,7 +272,7 @@ export class MenuListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('document:click', ['$event.target'])
+  @HostListener('document:click', ['$event.target'!])
   public onClickOutside(target: HTMLElement) {
     const clickedInside = this.elementRef.nativeElement.contains(target);
     if (!clickedInside) {
@@ -278,7 +280,7 @@ export class MenuListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
+  @HostListener('document:keydown.escape', ['$event'!])
   public onKeyPressEscape(event: KeyboardEvent) {
     this.isMenuListPopoverOpen.set(false);
   }
