@@ -62,7 +62,7 @@
   font-style: normal;
 }
 
-h1 {
+/* h1 {
   @apply text-6xl font-bold;
 }
 
@@ -84,7 +84,7 @@ h5 {
 
 h6 {
   @apply text-2xl font-medium;
-}
+} */
 
 @utility color-scheme-dark {
   color-scheme: dark;

@@ -5,7 +5,8 @@
         "linkBosses": "Bosses",
         "listBusinesses": {
           "title": "Businesses",
-          "linkCreateBusiness": "Create business"
+          "linkCreateBusiness": "Create business",
+          "linkListBusinesses": "List of businesses"
         },
         "listBranches": {
           "title": "Branches",

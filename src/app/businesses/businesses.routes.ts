@@ -3,13 +3,13 @@ import { CreateBusinessComponent } from "./pages/create-business/create-business
 
 export const businessesRoutes: Routes = [
     {
-        path: 'create-business',
+        path: 'list-businesses',
         component: CreateBusinessComponent,
-        title: 'Create Business'
+        title: 'List of Businesses'
     },
     {
         path: '**',
-        redirectTo: 'create-business'
+        redirectTo: 'list-businesses'
     }
 ];
 
