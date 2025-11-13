@@ -1,12 +1,19 @@
 <main class="min-h-full">
     <h1 class="text-3xl font-bold">{{ title() }}</h1>
     <div class="mt-5">
-        <div class="bg-white p-2 w-70 min-h-100 max-h-100 rounded-2xl shadow-md">
+        <div class="bg-white p-2 w-70 min-h-90 max-h-90  rounded-2xl shadow-md">
             <img 
                 class="rounded-2xl min-h-4 max-h-50"
                 src="https://www.experimenta.es/wp-content/uploads/2018/10/tesla-logo.jpg" alt="">
             <p class="mt-3 ms-2 font-semibold text-2xl">Tesla</p>
             <p class="mt-1 ms-2 font-light text-sm text-neutral-500">Electric Vehicle Manufacturer</p>
+            <span class="mt-3 ms-2 inline-block bg-success-500 text-white text-sm font-medium px-2 py-1 rounded">
+                <i class="fa-solid fa-check"></i>
+                Activo
+            </span>   
+            <button class="p-2 bg-neutral-400 text-white rounded-2xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
         </div>
     </div>
 </main>
