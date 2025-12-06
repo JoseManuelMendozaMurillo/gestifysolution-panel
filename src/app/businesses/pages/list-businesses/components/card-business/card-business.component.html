@@ -1,0 +1,64 @@
+<div
+    class="bg-white transition-darkmode p-2 w-full min-h-90 max-h-90  rounded-2xl shadow-md relative dark:bg-neutral-800 dark:text-white">
+    <div class="relative">
+        <img class="rounded-2xl w-full h-[200px] object-cover" [src]="business().logo?.url"
+            alt="{{ business().name }} Logo">
+
+        <div class="absolute top-2 right-2 z-5">
+
+            <button (click)="toggleMenu()"
+                class="duration-300 ease-in-out w-9 h-9 flex items-center justify-center rounded-full text-white bg-white/20 backdrop-blur-sm hover:bg-white/40 transition-all shadow-sm cursor-pointer">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+
+            @if (isMenuOpen()) {
+
+            <div (click)="closeMenu()" class="fixed inset-0 z-30 cursor-default"></div>
+
+            <div [@menuAnimation]
+                class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-lg shadow-xl overflow-hidden border border-neutral-100 dark:border-neutral-700 animate-fade-in-down z-40">
+
+                <button (click)="onEdit()"
+                    class="w-full text-left px-4 py-3 text-sm text-neutral-700 dark:text-white hover:bg-neutral-50 dark:hover:bg-neutral-700 flex items-center gap-2 transition-colors cursor-pointer">
+                    <i class="fa-regular fa-pen-to-square text-neutral-400 dark:text-neutral-300"></i>
+                    Update
+                </button>
+
+                <div class="h-px bg-neutral-100 dark:bg-neutral-700"></div>
+
+                <button (click)="onDelete()"
+                    class="w-full text-left px-4 py-3 text-sm text-error-600 dark:text-error-400 hover:bg-error-50 dark:hover:bg-error-900/30 flex items-center gap-2 transition-colors cursor-pointer">
+                    <i class="fa-regular fa-trash-can"></i>
+                    Delete
+                </button>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="p-2">
+        <p class="mt-2 font-bold text-xl truncate" [title]="business().name">
+            {{ business().name }}
+        </p>
+
+        <p class="mt-1 font-light text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2"
+            [title]="business().description">
+            {{ business().description }}
+        </p>
+
+        @if (business().active) {
+        <span
+            class="mt-4 inline-flex items-center bg-success-500 text-white text-sm font-semibold px-3 py-1 rounded-lg gap-2">
+            <i class="fa-solid fa-check text-xs"></i>
+            Activo
+        </span>
+        }
+        @else {
+        <span
+            class="mt-4 inline-flex items-center bg-warning-500 text-white text-sm font-semibold px-3 py-1 rounded-lg gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-xs"></i>
+            Inactivo
+        </span>
+        }
+    </div>
+</div>

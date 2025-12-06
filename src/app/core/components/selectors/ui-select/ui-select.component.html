@@ -1,0 +1,36 @@
+<div class="relative">
+
+    <button type="button" (click)="toggle()"
+        class="flex w-full items-center justify-between rounded-lg bg-primary-50 px-3 text-sm font-medium text-neutral-700 shadow-sm transition-colors hover:bg-primary-100 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600">
+        <div class="flex gap-2 overflow-hidden">
+            @if(value()) {
+            <ng-container [ngTemplateOutlet]="triggerTemplate() || defaultTemplate"
+                [ngTemplateOutletContext]="{ $implicit: value() }">
+            </ng-container>
+            } @else {
+            <span class="text-neutral-400 font-normal">{{ placeholder() }}</span>
+            }
+        </div>
+
+        <i class="fa-solid fa-caret-down" [@rotate]="isOpen() ? 'open' : 'closed'">
+        </i>
+    </button>
+
+    <ng-template #defaultTemplate let-val>
+        <span>{{ val }}</span>
+    </ng-template>
+
+    @if(isOpen()) {
+    <div class="fixed inset-0 z-10" (click)="close()"></div>
+    }
+
+    @if(isOpen()) {
+    <div [@dropdown] [ngClass]="{
+            'bottom-full mb-2 origin-bottom-right': dropdownPosition() === 'top',
+            'mt-2 origin-top-right': dropdownPosition() === 'bottom'
+        }"
+        class="absolute right-0 z-20 w-full rounded-lg bg-primary-50 p-1 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-neutral-700 dark:text-white dark:ring-white/10 max-h-60 overflow-y-auto">
+        <ng-content></ng-content>
+    </div>
+    }
+</div>

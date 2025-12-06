@@ -3,7 +3,7 @@ import { InputTextIconComponent } from "../../../core/components/inputs/input-te
 import { LoadingButtonComponent } from '../../../core/components/buttons/loading-button/loading-button.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Boss, CreateBoss } from '../../../bosses/interfaces/bosses.interface';
+import { Boss, CreateBoss } from '../../../bosses/interfaces/bosses.interfaces';
 import { BossesService } from '../../../bosses/services/bosses.service';
 import { SharedValidationsService } from '../../../shared/validations/shared-validations.service';
 import { SharedAsyncValidationsService } from '../../../shared/validations/shared-async-validations.service';
@@ -35,7 +35,7 @@ export class SignUpComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
   private translateService: TranslateService = inject(TranslateService);
-  
+
   private bossesService: BossesService = inject(BossesService);
   private countryService: CountryService = inject(CountryService);
   private authService: AuthService = inject(AuthService);
@@ -122,21 +122,21 @@ export class SignUpComponent {
     const bossData: any = this.form.value;
 
     // Create account
-    const newBoss: Boss|null = await this.createBoss(bossData);
+    const newBoss: Boss | null = await this.createBoss(bossData);
 
-    if(newBoss === null) {
-      const titleError: string =  'app.auth.signUp.errors.createAccountError.title';
-      const descriptionError: string =  'app.auth.signUp.errors.createAccountError.description';
+    if (newBoss === null) {
+      const titleError: string = 'app.auth.signUp.errors.createAccountError.title';
+      const descriptionError: string = 'app.auth.signUp.errors.createAccountError.description';
       this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
 
     // Login
     const isAuthenticated: boolean = await this.login(bossData);
-    
-    if(!isAuthenticated){
-      const titleError: string =  'app.auth.signUp.errors.signInError.title';
-      const descriptionError: string =  'app.auth.signUp.errors.signInError.description';
+
+    if (!isAuthenticated) {
+      const titleError: string = 'app.auth.signUp.errors.signInError.title';
+      const descriptionError: string = 'app.auth.signUp.errors.signInError.description';
       this.handleUnexpectedError(titleError, descriptionError);
       return;
     }
@@ -178,9 +178,9 @@ export class SignUpComponent {
       username: data.username,
       password: data.password
     })
-    
+
     return isAuthenticated;
-  } 
+  }
 
   private handleUnexpectedError(title: string, description: string): void {
     console.error('Unexpected error');

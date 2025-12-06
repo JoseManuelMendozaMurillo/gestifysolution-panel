@@ -1,0 +1,64 @@
+@if (page().totalPages > 0) {
+<nav aria-label="Page navigation"
+    class="transition-darkmode bg-white rounded-full py-3 px-4 md:px-8 flex items-center justify-between gap-4 md:gap-10 shadow-md w-full md:w-fit mx-auto font-sans text-neutral-700 dark:bg-neutral-800">
+
+    <button (click)="onPageChange(uiCurrentPage() - 1)" [disabled]="page().number === 0"
+        class="flex items-center gap-3 font-medium text-neutral-600 hover:text-primary-600 disabled:text-slate-300 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer group dark:text-neutral-200 dark:hover:text-primary-400 dark:disabled:text-neutral-600">
+
+        <i class="fa-solid fa-chevron-left text-xs group-hover:-translate-x-0.5 transition-transform"></i>
+        <span class="hidden md:inline">{{ "pagination.previous" | translate }}</span>
+    </button>
+
+    <div class="items-center gap-2 hidden md:flex">
+        @for (p of visiblePages(); track $index) {
+        @if (p === -1) {
+        <span class="text-neutral-400 px-1 select-none dark:text-neutral-500">...</span>
+        } @else {
+        <button (click)="onPageChange(p)" [class]="p === uiCurrentPage() 
+              ? 'bg-primary-600 text-white shadow-sm ring-4 ring-primary-500/20 hover:bg-primary-700' 
+              : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-700'"
+            class="w-10 h-10 rounded-full flex items-center justify-center font-medium transition-all duration-200 cursor-pointer">
+            {{ p }}
+        </button>
+        }
+        }
+    </div>
+
+    <div class="flex items-center gap-6">
+        <button (click)="onPageChange(uiCurrentPage() + 1)" [disabled]="uiCurrentPage() === page().totalPages"
+            class="flex items-center gap-3 font-medium text-neutral-600 hover:text-primary-600 disabled:text-neutral-300 disabled:cursor-not-allowed transition-colors duration-200 cursor-pointer group dark:text-neutral-200 dark:hover:text-primary-400 dark:disabled:text-neutral-600">
+            <span class="hidden md:inline">{{ "pagination.next" | translate }}</span>
+            <i class="fa-solid fa-chevron-right text-xs group-hover:translate-x-0.5 transition-transform"></i>
+        </button>
+
+        <span
+            class="text-neutral-500 text-sm font-medium border-l border-neutral-200 pl-6 hidden xs:inline sm:inline md:hidden xl:inline dark:text-neutral-400 dark:border-neutral-700">
+            {{ "pagination.showing" | translate }}
+            <span class="text-neutral-700 dark:text-white">
+                {{ (page().number + 1) * page().size > page().totalElements
+                ? page().totalElements
+                : (page().number + 1) * page().size
+                }}
+            </span>
+            {{ "pagination.of" | translate }}
+            <span class="text-neutral-700 dark:text-white">{{ page().totalElements }}</span>
+            {{ "pagination.results" | translate }}
+        </span>
+
+        <app-ui-select [value]="page().size" (valueChange)="onPageSizeChange($event)" placeholder="Select size"
+            [triggerTemplate]="sizeDisplay" class="min-w-32 hidden xl:inline">
+
+            @for(size of availablePageSizes(); track size) {
+            <app-ui-option [value]="size">
+                {{ size }} / {{ "pagination.page" | translate }}
+            </app-ui-option>
+            }
+
+        </app-ui-select>
+        <ng-template #sizeDisplay let-val>
+            <span class="font-medium p-2">{{ val }} / {{ "pagination.page" | translate }}</span>
+        </ng-template>
+    </div>
+
+</nav>
+}
