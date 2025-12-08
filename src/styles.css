@@ -27,16 +27,14 @@
 
 @font-face {
   font-family: typography-primary;
-  src: url("../public/assets/fonts/Inter/Inter-ExtraBold.ttf")
-    format("truetype");
+  src: url("../public/assets/fonts/Inter/Inter-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
   font-family: typography-primary;
-  src: url("../public/assets/fonts/Inter/Inter-ExtraLight.ttf")
-    format("truetype");
+  src: url("../public/assets/fonts/Inter/Inter-ExtraLight.ttf") format("truetype");
   font-weight: 200;
   font-style: normal;
 }
@@ -62,7 +60,7 @@
   font-style: normal;
 }
 
-h1 {
+/* h1 {
   @apply text-6xl font-bold;
 }
 
@@ -84,7 +82,7 @@ h5 {
 
 h6 {
   @apply text-2xl font-medium;
-}
+} */
 
 @utility color-scheme-dark {
   color-scheme: dark;
@@ -92,6 +90,8 @@ h6 {
 
 @theme {
   --font-primary: typography-primary, monospace;
+
+  --breakpoint-xs: 400px;
 
   --color-primary-50: #faf4ff;
   --color-primary-100: #f2e5ff;
@@ -172,12 +172,16 @@ h6 {
 }
 
 @layer components {
+  .transition-darkmode {
+    @apply transition-colors duration-100 ease-in-out;
+  }
+
   .btn {
     @apply w-full focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
   }
 
   .btn-primary {
-    @apply text-white bg-primary-600 hover:bg-primary-700  focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
+    @apply text-white bg-primary-600 hover:opacity-90 transition-opacity focus:ring-primary-300 dark:bg-primary-600 dark:hover:opacity-90 dark:focus:ring-primary-800;
   }
 
   .btn-primary:disabled {
@@ -185,7 +189,7 @@ h6 {
   }
 
   .btn-error {
-    @apply text-white bg-error-600 hover:bg-error-700  focus:ring-error-300  dark:bg-error-600 dark:hover:bg-error-700 dark:focus:ring-error-800;
+    @apply text-white bg-error-600 hover:bg-error-700 focus:ring-error-300 dark:bg-error-600 dark:hover:bg-error-700 dark:focus:ring-error-800;
   }
 
   .btn-error:disabled {
@@ -205,4 +209,3 @@ h6 {
     @apply text-error-800 border-error-300 bg-error-50 dark:bg-neutral-800 dark:text-error-400 dark:border-error-800;
   }
 }
-

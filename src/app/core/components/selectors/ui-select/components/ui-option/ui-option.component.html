@@ -1,0 +1,15 @@
+<div class="flex justify-between items-center w-full px-4 py-2 text-sm cursor-pointer select-none transition-colors rounded-md bg-primary-50 dark:bg-neutral-700 dark:text-white hover:bg-primary-100"
+    [class.bg-primary-50]="isSelected()" [class.text-primary-700]="isSelected()"
+    [class.dark:text-primary-400]="isSelected()" [class.hover:bg-neutral-100]="!isSelected()"
+    [class.dark:hover:bg-neutral-600]="!isSelected()" [class.text-neutral-700]="!isSelected()"
+    [class.dark:text-white]="!isSelected()" (click)="onClick()">
+
+    <ng-content></ng-content>
+
+
+    @if (isSelected()) {
+    <span class="flex items-center text-primary-400 shrink-0">
+        <i class="fa-solid fa-check text-xs"></i>
+    </span>
+    }
+</div>

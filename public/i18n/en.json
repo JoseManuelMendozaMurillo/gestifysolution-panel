@@ -5,7 +5,13 @@
         "linkBosses": "Bosses",
         "listBusinesses": {
           "title": "Businesses",
-          "linkCreateBusiness": "Create business"
+          "linkCreateBusiness": "Create Business",
+          "linkListBusinesses": "List of businesses",
+          "businessNotFound": "No businesses found"
+        },
+        "listBranches": {
+          "title": "Branches",
+          "linkCreateBranch": "Create branch"
         }
       },
       "navbar": {
@@ -120,5 +126,13 @@
   "languages": {
     "spanish": "Spanish",
     "english": "English"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "showing": "Showing",
+    "of": "of",
+    "results": "results",
+    "page": "page"
   }
 }

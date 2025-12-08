@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, filter } from 'rxjs';
@@ -33,7 +33,8 @@ import { Subscription, filter } from 'rxjs';
   `,
   styles: ``
 })
-export class MenuListItemComponent {
+export class MenuListItemComponent implements OnInit, OnDestroy {
+
 
   // Inputs
   public link: InputSignal<string> = input.required();
@@ -46,29 +47,33 @@ export class MenuListItemComponent {
   // Properties
   public isActive: WritableSignal<boolean> = signal(false);
   public titleTranslated: WritableSignal<string> = signal('');
-
   private activeRouteSubscription: Subscription | null = null;
+
 
   // Lifecycle methods
   public ngOnInit(): void {
     this.translateService.stream(this.title()).subscribe((title: string) => {
       this.titleTranslated.set(title);
     });
-
+    this.chedckActiveState();
     this.activeRouteSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const isRouteActive: boolean = this.router.isActive(this.link(), {
-          paths: 'exact',
-          queryParams: 'ignored',
-          matrixParams: 'ignored',
-          fragment: 'ignored'
-        });
-        this.isActive.set(isRouteActive);
+        this.chedckActiveState();
       });
   }
 
   public ngOnDestroy(): void {
     this.activeRouteSubscription?.unsubscribe();
+  }
+
+  private chedckActiveState(): void {
+    const isRouteActive: boolean = this.router.isActive(this.link(), {
+      paths: 'exact',
+      queryParams: 'ignored',
+      matrixParams: 'ignored',
+      fragment: 'ignored'
+    });
+    this.isActive.set(isRouteActive);
   }
 }

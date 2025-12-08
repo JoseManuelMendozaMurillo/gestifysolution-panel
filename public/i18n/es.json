@@ -5,7 +5,13 @@
         "linkBosses": "Jefes",
         "listBusinesses": {
           "title": "Negocios",
-          "linkCreateBusiness": "Crear negocio"
+          "linkCreateBusiness": "Crear negocio",
+          "linkListBusinesses": "Listado de negocios",
+          "businessNotFound": "No se encontraron negocios"
+        },
+        "listBranches": {
+          "title": "Sucursales",
+          "linkCreateBranch": "Crear sucursal"
         }
       },
       "navbar": {
@@ -120,5 +126,13 @@
   "languages": {
     "spanish": "Español",
     "english": "Inglés"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "showing": "Mostrando",
+    "of": "de",
+    "results": "resultados",
+    "page": "pagina"  
   }
 }
